@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<result>
+   <suites>
+      <suite>
+         <file>/a/b/c/test-junitResult1.xml</file>
+         <name>a.b.c.Test1</name>
+         <duration>3.00</duration>
+         <cases>
+            <case>
+               <duration>2.00</duration>
+               <className>a.b.c.Test1</className>
+               <testName>test0</testName>
+               <skipped>false</skipped>
+               <errorStackTrace>java.lang.AssertionError: Random fail as wanted... r=32
+                  at org.junit.Assert.fail(Assert.java:88)
+                  at unitth.dummytests.RandomPassFailImpl.&lt;init&gt;(RandomPassFailImpl.java:11)
+                  at unitth.dummytests.RandomPassFail1Test.test0(RandomPassFail1Test.java:8)
+               </errorStackTrace>
+               <errorDetails>Random fail as wanted... r=32</errorDetails>
+               <failedSince>2</failedSince>
+            </case>
+            <case>
+               <duration>1.0</duration>
+               <className>a.b.c.Test1</className>
+               <testName>test1</testName>
+               <skipped>false</skipped>
+               <failedSince>0</failedSince>
+            </case>
+            <case>
+               <duration>0</duration>
+               <className>a.b.c.Test1</className>
+               <testName>test2</testName>
+               <skipped>true</skipped>
+               <failedSince>0</failedSince>
+            </case>
+         </cases>
+      </suite>
+      <suite>
+         <file>/a/b/c/test-junitResult2.xml</file>
+         <name>a.b.c.Test2</name>
+         <duration>3.00</duration>
+         <cases>
+            <case>
+               <duration>0</duration>
+               <className>a.b.c.Test2</className>
+               <testName>test2</testName>
+               <skipped>true</skipped>
+               <failedSince>0</failedSince>
+            </case>
+            <case>
+               <duration>1.0</duration>
+               <className>a.b.c.Test2</className>
+               <testName>test1</testName>
+               <skipped>false</skipped>
+               <failedSince>0</failedSince>
+            </case>
+            <case>
+               <duration>2.00</duration>
+               <className>a.b.c.Test2</className>
+               <testName>test0</testName>
+               <skipped>false</skipped>
+               <errorStackTrace>java.lang.AssertionError: Random fail as wanted... r=32
+                  at org.junit.Assert.fail(Assert.java:88)
+                  at unitth.dummytests.RandomPassFailImpl.&lt;init&gt;(RandomPassFailImpl.java:11)
+                  at unitth.dummytests.RandomPassFail1Test.test0(RandomPassFail1Test.java:8)
+               </errorStackTrace>
+               <errorDetails>Random fail as wanted... r=32</errorDetails>
+               <failedSince>2</failedSince>
+            </case>
+         </cases>
+      </suite>
+   </suites>
+   <duration>6.00</duration>
+   <keepLongStdio>false</keepLongStdio>
+</result>

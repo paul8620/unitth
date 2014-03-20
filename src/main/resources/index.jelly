@@ -1,0 +1,6 @@
+<!--
+  This view is used to render the installed plugins page.
+-->
+<div>
+  This plugin generates test history stats and failure/pass matrices based on results from previous builds.
+</div>

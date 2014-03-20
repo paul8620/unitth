@@ -1,0 +1,78 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <parent>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>plugin</artifactId>
+      <version>1.509.4</version><!-- which version of Jenkins is this plugin built against? -->
+   </parent>
+
+   <groupId>org.jenkins-ci.plugins</groupId>
+   <artifactId>unitth</artifactId>
+   <version>1.0-SNAPSHOT</version>
+   <packaging>hpi</packaging>
+   <name>Test History Plugin</name>
+
+   <properties>
+      <excludedTests>**/dummytests/**/*.java</excludedTests>
+   </properties>
+
+   <!-- get every artifact through repo.jenkins-ci.org, which proxies all the artifacts that we need -->
+   <repositories>
+      <repository>
+         <id>repo.jenkins-ci.org</id>
+         <url>http://repo.jenkins-ci.org/public/</url>
+      </repository>
+   </repositories>
+
+   <pluginRepositories>
+      <pluginRepository>
+         <id>repo.jenkins-ci.org</id>
+         <url>http://repo.jenkins-ci.org/public/</url>
+      </pluginRepository>
+   </pluginRepositories>
+
+   <dependencies>
+      <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+         <version>4.11</version>
+      </dependency>
+   </dependencies>
+
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.16</version>
+            <configuration>
+               <testFailureIgnore>true</testFailureIgnore>
+               <reportsDirectory>${basedir}/target/${testReportLocation}</reportsDirectory>
+               <excludes>
+                  <exclude>${excludedTests}</exclude>
+               </excludes>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
+
+   <profiles>
+      <profile>
+         <id>default</id>
+         <activation>
+            <activeByDefault>true</activeByDefault>
+         </activation>
+         <properties>
+            <excludedTests>**/dummytests/**/*.java</excludedTests>
+            <testReportLocation>surefire-reports</testReportLocation>
+         </properties>
+      </profile>
+      <profile>
+         <id>dummytests</id>
+         <properties>
+            <excludedTests>**/tests/**/*.java</excludedTests>
+            <testReportLocation>dummytest-reports</testReportLocation>
+         </properties>
+      </profile>
+   </profiles>
+</project>
