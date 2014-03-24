@@ -28,16 +28,18 @@ public class ParserSingleBuildTest {
       Method parseFile = thr.getClass().getDeclaredMethod("parseReport", File.class);
       parseFile.setAccessible(true);
 
+      System.out.println("File; "+new File(thr.getClass().getResource("/test-junitReport.xml").getFile()));
+      System.out.println("THR: "+thr);
       parseFile.invoke(thr, new File(thr.getClass().getResource("/test-junitReport.xml").getFile()));
 
-      Field buildReports = TestHistoryReporter.class.getDeclaredField("buildReports");
+      Field buildReports = thr.getClass().getDeclaredField("buildReports");
       buildReports.setAccessible(true);
       tr = ((ArrayList<TestReport>)buildReports.get(thr)).get(0);
    }
 
    @Test
    public void noTests() throws Exception {
-      assertEquals("Checking the number of tests in this build result.", 6, tr.getTests());
+      assertEquals("Checking the number of tests in this build result.", 6, tr.getNoTests());
    }
 
    @Test

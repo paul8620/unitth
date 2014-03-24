@@ -64,13 +64,7 @@ public class TestHistoryReporter extends Recorder {
       return true;
    }
 
-   private List readBuildTestReports() throws FileNotFoundException {
-      final List reportList = new ArrayList();
-
-      if (null == this.project) {
-         return reportList;
-      }
-
+   private void readBuildTestReports() throws FileNotFoundException {
       final List<? extends AbstractBuild<?, ?>> builds = project.getBuilds();
       for (AbstractBuild<?, ?> currentBuild : builds) {
          logger.println("BUILD: "+currentBuild.getNumber());
@@ -84,7 +78,6 @@ public class TestHistoryReporter extends Recorder {
          }
          logger.println("junit: "+currentBuild.getRootDir());
       }
-      return reportList;
    }
 
    private void parseReport(File f) {
@@ -95,7 +88,8 @@ public class TestHistoryReporter extends Recorder {
          ReportHandler handler = new ReportHandler();
          parser.parse(f, handler);
       } catch (Exception e) {
-         logger.println("Whoo b: "+e.getMessage());
+         logger.println("Parsing exception: "+e.getMessage());
+         e.printStackTrace();
       }
    }
 
@@ -117,9 +111,9 @@ public class TestHistoryReporter extends Recorder {
 
    public static class ReportHandler extends DefaultHandler {
 
-      TestReport tr = null; // Created on document start
-      TestSuite testSuite = null; // Currently parsed test suite
-      TestCase testCase = null; // Currently parsed test case
+      private TestReport tr = null; // Created on document start
+      private TestSuite testSuite = null; // Currently parsed test suite
+      private TestCase testCase = null; // Currently parsed test case
 
       private Stack elementStack = new Stack();
       private StringBuilder buffer = new StringBuilder();
@@ -140,11 +134,17 @@ public class TestHistoryReporter extends Recorder {
       public void startElement(String uri, String localName, String qName,
          Attributes attributes) throws SAXException {
          this.elementStack.push(qName);
+         System.out.println("startElem: "+qName);
          if (qName.equals(SUITE)) {
             testSuite = new TestSuite();
          }
+         else if (qName.equals(CASE)) {
+            logger.println("startElement:case");
+            testCase = new TestCase();
+         }
          else if (qName.equals(CLASS_NAME)) {
             logger.println("startElement:className");
+            testCase = new TestCase();
          }
          else if (qName.equals(TEST_NAME)) {
             logger.println("startElement:testName");
@@ -166,6 +166,9 @@ public class TestHistoryReporter extends Recorder {
          else if (qName.equals(NAME)) {
            testSuite.setName(new String(ch, start, length));
          }
+         else if (qName.equals(TEST_NAME)) {
+            testCase.setName(new String(ch, start, length));
+         }
          else if (qName.equals(DURATION)) {
             String top = (String)this.elementStack.pop();
             if (((String)this.elementStack.peek()).equals(SUITE)) {
@@ -179,11 +182,6 @@ public class TestHistoryReporter extends Recorder {
             }
             this.elementStack.push(top);
          }
-      }
-
-      private void readElementContent(char[] ch, int start, int length) {
-         String content = new String(ch, start, length);
-
       }
 
       @Override
@@ -202,6 +200,9 @@ public class TestHistoryReporter extends Recorder {
          else if (qName.equals(CASES)) {
 
          }
+         else if (qName.equals(CASE)) {
+            testSuite.addTestCase(testCase);
+         }
          else if (qName.equals(SUITE)) {
             tr.addSuite(testSuite);
             testSuite = null; // Resetting
@@ -210,12 +211,14 @@ public class TestHistoryReporter extends Recorder {
 
       @Override
       public void endDocument() throws SAXException {
+         System.out.println("Adding tr: "+tr.toString());
          buildReports.add(tr);
       }
 
       @Override
       public void startDocument() throws SAXException {
          tr = new TestReport();
+         System.out.println("Adding tr: "+tr.toString());
       }
    }
 }

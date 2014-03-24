@@ -8,8 +8,12 @@ public class TestReport {
 
    private HashMap<String, TestSuite> testSuites = new HashMap<String, TestSuite>();
 
-   public int getTests() {
-      return 0;
+   public int getNoTests() {
+      int tests = 0;
+      for (TestSuite ts :testSuites.values()) {
+         tests += ts.getNoTests();
+      }
+      return tests;
    }
 
    public int getNoSuites() {

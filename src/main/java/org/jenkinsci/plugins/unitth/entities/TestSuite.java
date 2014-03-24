@@ -33,4 +33,12 @@ public class TestSuite {
    public double getDuration() {
       return duration;
    }
+
+   public int getNoTests() {
+      return testCases.size();
+   }
+
+   public void addTestCase(TestCase tc) {
+      testCases.put(tc.getName(), tc);
+   }
 }
