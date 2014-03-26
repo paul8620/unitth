@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class TestReport {
 
    private double executionTime = 0.0;
-
+   private int buildNumber = 0;
    private HashMap<String, TestSuite> testSuites = new HashMap<String, TestSuite>();
 
    public int getNoTests() {
@@ -26,5 +26,25 @@ public class TestReport {
 
    public TestSuite getSuiteByName(String name) {
       return testSuites.get(name);
+   }
+
+   public int getNoSkippedTests() {
+      int noSkipped = 0;
+      for (TestSuite ts : testSuites.values()) {
+         noSkipped += ts.getNoSkippedTests();
+      }
+      return noSkipped;
+   }
+
+   public void setBuildNumber(int buildNumber) {
+      this.buildNumber = buildNumber;
+   }
+
+   public int getBuildNumber() {
+      return buildNumber;
+   }
+
+   public HashMap<String,TestSuite> getTestSuites() {
+      return testSuites;
    }
 }

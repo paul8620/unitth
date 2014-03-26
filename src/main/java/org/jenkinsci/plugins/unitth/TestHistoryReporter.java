@@ -11,6 +11,8 @@ import hudson.tasks.Publisher;
 import hudson.tasks.Recorder;
 import jenkins.model.Jenkins;
 import org.jenkinsci.plugins.unitth.entities.TestCase;
+import org.jenkinsci.plugins.unitth.entities.TestCaseMatrix;
+import org.jenkinsci.plugins.unitth.entities.TestCaseVerdict;
 import org.jenkinsci.plugins.unitth.entities.TestReport;
 import org.jenkinsci.plugins.unitth.entities.TestSuite;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -26,6 +28,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.TreeMap;
 
 // TODO, configurable: no runs back. 0-no-of-available
 // TODO, configurable, progress counter....
@@ -35,6 +38,8 @@ public class TestHistoryReporter extends Recorder {
    private static PrintStream logger = null;
 
    private static ArrayList<TestReport> buildReports = new ArrayList<TestReport>();
+   private static TreeMap<String,TestCaseMatrix> testCaseMatrix = new TreeMap<String,TestCaseMatrix>();
+   private ArrayList<Integer> buildNumbers = new ArrayList<Integer>(); // Sorted?
 
    public BuildStepMonitor getRequiredMonitorService() {
       return BuildStepMonitor.NONE;
@@ -48,35 +53,33 @@ public class TestHistoryReporter extends Recorder {
       throws InterruptedException, FileNotFoundException {
       project = build.getProject();
       logger = listener.getLogger();
-
-
       logger.println("[unitth] Calculating history report...");
-      // Loop through all builds
-      //logger.println("build.getPreviousBuild().getTestResultAction().getDisplayName()" + build.getPreviousBuild().getTestResultAction().getDisplayName());
-      //logger.println("build.getPreviousBuild().getTestResultAction().getFailedTests()" + build.getPreviousBuild().getTestResultAction()
-      //   .getFailedTests());
-      //logger.println("A" + build.getPreviousBuild().getAggregatedTestResultAction());
-      //logger.println("B" + build.getPreviousBuild().getAggregatedTestResultAction().getResult());
-      //listener.getLogger().println(build.getPreviousBuild().getTestResultAction().getDisplayName());
-
       readBuildTestReports();
-      
+      populateMatrix();
+
+      // TEMP
+      failureMatrix();
+
       return true;
    }
 
    private void readBuildTestReports() throws FileNotFoundException {
       final List<? extends AbstractBuild<?, ?>> builds = project.getBuilds();
       for (AbstractBuild<?, ?> currentBuild : builds) {
+         /* REMOVE */
          logger.println("BUILD: "+currentBuild.getNumber());
          logger.println("jenks: "+Jenkins.getInstance().getRootUrl());
          logger.println("build: "+currentBuild.getRootDir());
+         /* ALL THIS */
          File f = new File(currentBuild.getRootDir()+"/junitResult.xml"); ///+"/build/"+currentBuild.getNumber()+"/junitResult.xml"); // FIXME,
          // what about testng or custom?
          logger.println("daFile: "+f.getAbsoluteFile());
          if (f.exists()) {
             parseReport(f);
+            buildReports.get(buildReports.size()-1).setBuildNumber(currentBuild.getNumber());
          }
-         logger.println("junit: "+currentBuild.getRootDir());
+         logger.println("junit: "+currentBuild.getRootDir()); // REMOVE
+         buildNumbers.add(currentBuild.getNumber());
       }
    }
 
@@ -93,6 +96,19 @@ public class TestHistoryReporter extends Recorder {
       }
    }
 
+   private void populateMatrix() {
+      for (TestReport tr : buildReports) {
+         for (TestSuite ts : tr.getTestSuites().values()) {
+            for (TestCase tc : ts.getTestCases().values()) {
+               if (!testCaseMatrix.containsKey(tc.getQualifiedName())) {
+                  testCaseMatrix.put(tc.getQualifiedName(), new TestCaseMatrix(tc, tr.getBuildNumber()));
+               } else {
+                  testCaseMatrix.get(tc.getQualifiedName()).increment(tc, tr.getBuildNumber());
+               }
+            }
+         }
+      }
+   }
 
    @Extension
    public static class DescriptorImpl extends BuildStepDescriptor<Publisher> {
@@ -129,28 +145,20 @@ public class TestHistoryReporter extends Recorder {
       private final String CLASS_NAME = "className";
       private final String TEST_NAME = "testName";
       private final String SKIPPED = "skipped";
+      private final String ERROR_DETAILS = "errorDetails";
 
       @Override
       public void startElement(String uri, String localName, String qName,
          Attributes attributes) throws SAXException {
          this.elementStack.push(qName);
-         System.out.println("startElem: "+qName);
          if (qName.equals(SUITE)) {
             testSuite = new TestSuite();
          }
          else if (qName.equals(CASE)) {
-            logger.println("startElement:case");
             testCase = new TestCase();
          }
-         else if (qName.equals(CLASS_NAME)) {
-            logger.println("startElement:className");
-            testCase = new TestCase();
-         }
-         else if (qName.equals(TEST_NAME)) {
-            logger.println("startElement:testName");
-         }
-         else if (qName.equals(SKIPPED)) {
-            logger.println("startElement:skipped");
+         else if (qName.equals(ERROR_DETAILS)) {
+            testCase.setVerdict(TestCaseVerdict.FAILED);
          }
       }
 
@@ -166,8 +174,17 @@ public class TestHistoryReporter extends Recorder {
          else if (qName.equals(NAME)) {
            testSuite.setName(new String(ch, start, length));
          }
+         else if (qName.equals(CLASS_NAME)) {
+            testCase.setClassName(new String(ch, start, length));
+         }
          else if (qName.equals(TEST_NAME)) {
             testCase.setName(new String(ch, start, length));
+         }
+         else if (qName.equals(SKIPPED)) {
+            boolean isSkipped = Boolean.parseBoolean(new String(ch, start, length));
+            if (isSkipped) {
+               testCase.setVerdict(TestCaseVerdict.SKIPPED);
+            }
          }
          else if (qName.equals(DURATION)) {
             String top = (String)this.elementStack.pop();
@@ -188,20 +205,9 @@ public class TestHistoryReporter extends Recorder {
       public void endElement(String uri, String localName, String qName)
          throws SAXException {
          this.elementStack.pop();
-         if (qName.equals(CLASS_NAME)) {
-            logger.println("endElement:className");
-         }
-         else if (qName.equals(TEST_NAME)) {
-            logger.println("endElement:testName");
-         }
-         else if (qName.equals(SKIPPED)) {
-            logger.println("endElement:skipped");
-         }
-         else if (qName.equals(CASES)) {
-
-         }
-         else if (qName.equals(CASE)) {
+         if (qName.equals(CASE)) {
             testSuite.addTestCase(testCase);
+            testCase = null; // Resetting
          }
          else if (qName.equals(SUITE)) {
             tr.addSuite(testSuite);
@@ -211,14 +217,42 @@ public class TestHistoryReporter extends Recorder {
 
       @Override
       public void endDocument() throws SAXException {
-         System.out.println("Adding tr: "+tr.toString());
          buildReports.add(tr);
       }
 
       @Override
       public void startDocument() throws SAXException {
          tr = new TestReport();
-         System.out.println("Adding tr: "+tr.toString());
+      }
+   }
+
+   //
+   // GETTERS
+   //
+   public ArrayList<TreeMap<Integer, TestCase>> getTestCaseFailureOnlySpread() {
+      ArrayList<TreeMap<Integer, TestCase>> failsOnlySpread = new ArrayList<TreeMap<Integer, TestCase>>();
+      for (TestCaseMatrix tcm : testCaseMatrix.values()) {
+         if (tcm.hasFailed()) {
+            failsOnlySpread.add(tcm.getSpread());
+         }
+      }
+      return failsOnlySpread;
+   }
+
+   //
+   // PRINTERS
+   //
+   public void failureMatrix() {
+      for (TreeMap<Integer, TestCase> spread : getTestCaseFailureOnlySpread()) {
+         System.out.print(spread.firstEntry().getValue().getQualifiedName()+" || ");
+         for (int buildNumber : buildNumbers) {
+            String str = "-";
+            if (spread.get(buildNumber).getVerdict()==TestCaseVerdict.FAILED) {
+               str = "x";
+            }
+            System.out.print(str+" ");
+         }
+         System.out.print("\n");
       }
    }
 }

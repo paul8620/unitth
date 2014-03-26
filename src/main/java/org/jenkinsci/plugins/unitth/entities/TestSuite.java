@@ -41,4 +41,18 @@ public class TestSuite {
    public void addTestCase(TestCase tc) {
       testCases.put(tc.getName(), tc);
    }
+
+   public int getNoSkippedTests() {
+      int noSkipped = 0;
+      for (TestCase tc : testCases.values()) {
+         if (tc.getVerdict()==TestCaseVerdict.SKIPPED) {
+            noSkipped++;
+         }
+      }
+      return noSkipped;
+   }
+
+   public HashMap<String, TestCase> getTestCases() {
+      return testCases;
+   }
 }
