@@ -248,6 +248,7 @@ public class TestHistoryReporter extends Recorder {
          logger.print(spread.firstEntry().getValue().getQualifiedName()+" || ");
          for (int buildNumber : buildNumbers) {
             String str = "-";
+            logger.print("build nr "+buildNumber+ "sz "+spread.size());
             if (spread.get(buildNumber).getVerdict()==TestCaseVerdict.FAILED) {
                str = "x";
             }
