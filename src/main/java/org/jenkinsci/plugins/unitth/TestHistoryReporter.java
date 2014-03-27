@@ -301,4 +301,8 @@ public class TestHistoryReporter extends Recorder {
       }
       return theMatrix;
    }
+
+   public String getName() {
+      return name;
+   }
 }
