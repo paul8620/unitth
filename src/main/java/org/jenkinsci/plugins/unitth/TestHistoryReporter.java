@@ -58,7 +58,7 @@ public class TestHistoryReporter extends Recorder {
       populateMatrix();
 
       // TEMP
-      failureMatrix();
+      failureMatrixToConsole();
 
       return true;
    }
@@ -245,23 +245,25 @@ public class TestHistoryReporter extends Recorder {
    //
    // PRINTERS
    //
-   public void failureMatrix() {
+   public void failureMatrixToConsole() {
+      logger.print("Class.testName || ");
+      for (int buildNumber : buildNumbers) {
+         logger.print(buildNumber+" ");
+      }
+      logger.print("\n");
       for (TreeMap<Integer, TestCase> spread : getTestCaseFailureOnlySpread()) {
-         System.out.print(spread.firstEntry().getValue().getQualifiedName()+" || ");
-         logger.print(spread.firstEntry().getValue().getQualifiedName()+" || ");
+         logger.print(spread.firstEntry().getValue().getQualifiedName() + " || ");
          for (int buildNumber : buildNumbers) {
-            String str = "-";
+            String str = "- ";
             //logger.print("B"+buildNumber+ "-S"+spread.size()+" ");
             if (spread.get(buildNumber) == null) {
-               str = ".";
+               str = ". ";
             }
             else if (spread.get(buildNumber).getVerdict()==TestCaseVerdict.FAILED) {
-               str = "x";
+               str = "x ";
             }
-            System.out.print(str+" ");
-            logger.print(str+" ");
+            logger.print(str);
          }
-         System.out.print("\n");
          logger.print("\n");
       }
    }

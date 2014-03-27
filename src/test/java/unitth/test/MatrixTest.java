@@ -65,7 +65,7 @@ public class MatrixTest {
          System.out.println("spread.size "+tcm.getSpread().size());
       }
 
-      thr.failureMatrix();
+      thr.failureMatrixToConsole();
    }
 
    @Test
