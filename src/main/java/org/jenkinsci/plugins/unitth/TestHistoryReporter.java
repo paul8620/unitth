@@ -98,8 +98,11 @@ public class TestHistoryReporter extends Recorder {
 
    private void populateMatrix() {
       for (TestReport tr : buildReports) {
+         logger.println("BR:"+tr.getBuildNumber());
          for (TestSuite ts : tr.getTestSuites().values()) {
+            logger.println("TS:"+ts.getName());
             for (TestCase tc : ts.getTestCases().values()) {
+               logger.println("TC:"+tc.getName());
                if (!testCaseMatrix.containsKey(tc.getQualifiedName())) {
                   testCaseMatrix.put(tc.getQualifiedName(), new TestCaseMatrix(tc, tr.getBuildNumber()));
                } else {
@@ -248,7 +251,7 @@ public class TestHistoryReporter extends Recorder {
          logger.print(spread.firstEntry().getValue().getQualifiedName()+" || ");
          for (int buildNumber : buildNumbers) {
             String str = "-";
-            logger.print("build nr "+buildNumber+ "sz "+spread.size());
+            logger.print("B"+buildNumber+ "-S"+spread.size()+" ");
             if (spread.get(buildNumber).getVerdict()==TestCaseVerdict.FAILED) {
                str = "x";
             }
