@@ -39,7 +39,7 @@ public class TestHistoryReporter extends Recorder {
 
    private static ArrayList<TestReport> buildReports = new ArrayList<TestReport>();
    private static TreeMap<String,TestCaseMatrix> testCaseMatrix = new TreeMap<String,TestCaseMatrix>();
-   private ArrayList<Integer> buildNumbers = new ArrayList<Integer>(); // Sorted?
+   private static ArrayList<Integer> buildNumbers = new ArrayList<Integer>();
 
    public BuildStepMonitor getRequiredMonitorService() {
       return BuildStepMonitor.NONE;
