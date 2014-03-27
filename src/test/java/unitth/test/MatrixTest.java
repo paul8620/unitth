@@ -22,11 +22,11 @@ public class MatrixTest {
 
    private static ArrayList<TestReport> brr = new ArrayList<TestReport>();
    private static TreeMap<String,TestCaseMatrix> tcmTree = new TreeMap<String,TestCaseMatrix>();
-   private static TestHistoryReporter thr = new TestHistoryReporter();
+   private static TestHistoryReporter thr = new TestHistoryReporter("");
 
    @BeforeClass
    public static void beforeAll() throws Exception {
-      TestHistoryReporter thr = new TestHistoryReporter();
+      TestHistoryReporter thr = new TestHistoryReporter("");
 
       // Reflection stuff
       Field logger = thr.getClass().getDeclaredField("logger");

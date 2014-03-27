@@ -1,0 +1,28 @@
+<j:jelly xmlns:j="jelly:core"
+         xmlns:f="/lib/form"
+         xmlns:l="/lib/layout">
+   <!--
+    <j:set var="yuiSuffix" value="min"/>
+    <l:yui module="editor"/>
+    <f:entry title="${%rich.text.markupLanguage}" field="parserName">
+        <f:select/>
+    </f:entry>
+    <f:entry title="${%rich.text.stableText}" field="stableText">
+        <f:textarea/>
+    </f:entry>
+    <f:advanced>
+        <f:entry title="${%rich.text.unstableAsStable}" field="unstableAsStable">
+            <f:checkbox default="true"/>
+        </f:entry>
+        <f:entry title="${%rich.text.unstableText}" field="unstableText">
+            <f:textarea/>
+        </f:entry>
+        <f:entry title="${%rich.text.failedAsStable}" field="failedAsStable">
+            <f:checkbox default="true"/>
+        </f:entry>
+        <f:entry title="${%rich.text.failedText}" field="failedText">
+            <f:textarea/>
+        </f:entry>
+    </f:advanced>
+    -->
+</j:jelly>

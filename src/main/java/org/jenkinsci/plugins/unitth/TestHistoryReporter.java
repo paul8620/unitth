@@ -24,6 +24,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class TestHistoryReporter extends Recorder {
 
    private AbstractProject project = null;
    private static PrintStream logger = null;
+   private String name;
 
    private static ArrayList<TestReport> buildReports = new ArrayList<TestReport>();
    private static TreeMap<String,TestCaseMatrix> testCaseMatrix = new TreeMap<String,TestCaseMatrix>();
@@ -47,11 +49,13 @@ public class TestHistoryReporter extends Recorder {
    }
 
    @DataBoundConstructor
-   public TestHistoryReporter() {}
+   public TestHistoryReporter(final String name) {
+      this.name = name;
+   }
 
    @Override
    public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
-      throws InterruptedException, FileNotFoundException {
+      throws InterruptedException, FileNotFoundException, IOException {
       project = build.getProject();
       logger = listener.getLogger();
       logger.println("[unitth] Calculating history report...");
@@ -60,6 +64,11 @@ public class TestHistoryReporter extends Recorder {
 
       // TEMP
       failureMatrixToConsole();
+
+      PluginAction buildAction;
+      buildAction = new PluginAction(failureMatrix());
+      build.addAction(buildAction);
+      build.save();
 
       return true;
    }
@@ -267,5 +276,29 @@ public class TestHistoryReporter extends Recorder {
          }
          logger.print("\n");
       }
+   }
+
+   public String failureMatrix() {
+      String theMatrix = "";
+      for (int buildNumber : buildNumbers) {
+         theMatrix += buildNumber+" ";
+      }
+      theMatrix += "\n";
+      for (TreeMap<Integer, TestCase> spread : getTestCaseFailureOnlySpread()) {
+         theMatrix += spread.firstEntry().getValue().getQualifiedName() + " || ";
+         for (int buildNumber : buildNumbers) {
+            String str = "- ";
+            //logger.print("B"+buildNumber+ "-S"+spread.size()+" ");
+            if (spread.get(buildNumber) == null) {
+               str = ". ";
+            }
+            else if (spread.get(buildNumber).getVerdict()==TestCaseVerdict.FAILED) {
+               str = "x ";
+            }
+            theMatrix += str;
+         }
+         theMatrix += "\n";
+      }
+      return theMatrix;
    }
 }

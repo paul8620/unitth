@@ -19,7 +19,7 @@ public class ParserSingleBuildTest {
 
    @BeforeClass
    public static void beforeAll() throws Exception {
-      TestHistoryReporter thr = new TestHistoryReporter();
+      TestHistoryReporter thr = new TestHistoryReporter("");
 
       // Reflection stuff
       Field logger = thr.getClass().getDeclaredField("logger");
