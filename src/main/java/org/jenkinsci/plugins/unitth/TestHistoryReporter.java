@@ -77,9 +77,9 @@ public class TestHistoryReporter extends Recorder {
          if (f.exists()) {
             parseReport(f);
             buildReports.get(buildReports.size()-1).setBuildNumber(currentBuild.getNumber());
+            buildNumbers.add(currentBuild.getNumber());
          }
          logger.println("junit: "+currentBuild.getRootDir()); // REMOVE
-         buildNumbers.add(currentBuild.getNumber());
       }
    }
 
@@ -245,14 +245,17 @@ public class TestHistoryReporter extends Recorder {
    public void failureMatrix() {
       for (TreeMap<Integer, TestCase> spread : getTestCaseFailureOnlySpread()) {
          System.out.print(spread.firstEntry().getValue().getQualifiedName()+" || ");
+         logger.print(spread.firstEntry().getValue().getQualifiedName()+" || ");
          for (int buildNumber : buildNumbers) {
             String str = "-";
             if (spread.get(buildNumber).getVerdict()==TestCaseVerdict.FAILED) {
                str = "x";
             }
             System.out.print(str+" ");
+            logger.print(str+" ");
          }
          System.out.print("\n");
+         logger.print("\n");
       }
    }
 }
