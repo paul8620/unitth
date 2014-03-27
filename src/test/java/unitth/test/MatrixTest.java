@@ -16,6 +16,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class MatrixTest {
 
@@ -46,7 +47,7 @@ public class MatrixTest {
 
       Field buildNumbers = thr.getClass().getDeclaredField("buildNumbers");
       buildNumbers.setAccessible(true);
-      ArrayList<Integer> iii = new ArrayList<Integer>();
+      TreeSet<Integer> iii = new TreeSet<Integer>();
       iii.add(1);
       iii.add(2);
       buildNumbers.set(thr, iii);

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 // TODO, configurable: no runs back. 0-no-of-available
 // TODO, configurable, progress counter....
@@ -39,7 +40,7 @@ public class TestHistoryReporter extends Recorder {
 
    private static ArrayList<TestReport> buildReports = new ArrayList<TestReport>();
    private static TreeMap<String,TestCaseMatrix> testCaseMatrix = new TreeMap<String,TestCaseMatrix>();
-   private static ArrayList<Integer> buildNumbers = new ArrayList<Integer>();
+   private static TreeSet<Integer> buildNumbers = new TreeSet<Integer>();
 
    public BuildStepMonitor getRequiredMonitorService() {
       return BuildStepMonitor.NONE;
