@@ -6,6 +6,7 @@ import hudson.model.ProminentProjectAction;
 import org.jenkinsci.plugins.unitth.entities.TestCaseMatrix;
 import org.kohsuke.stapler.StaplerProxy;
 
+import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -19,6 +20,9 @@ public class PluginAction implements ProminentProjectAction,
    private String theMatrix; // REMOVABLE
    private TreeMap<String,TestCaseMatrix> matrix;
    private TreeSet<Integer> buildNumbers;
+
+   // TEMP LOGGER
+   private static PrintStream logger = null;
 /*
    public PluginAction(TreeMap<String,TestCaseMatrix> testCaseMatrix) {
       this.testCaseMatrix = testCaseMatrix;
@@ -71,6 +75,7 @@ public class PluginAction implements ProminentProjectAction,
    public String[][] getSpreads() {
       int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
       String[][] ss = new String[matrix.size()][diff];
+      logger.print("Rows: "+matrix.size()+" Columns: "+diff+" (from "+buildNumbers.last()+"-"+buildNumbers.first()+" )");
       // populate-it
       return ss;
    }
@@ -85,5 +90,9 @@ public class PluginAction implements ProminentProjectAction,
 
    public Object[] getBuildNumbers() {
       return buildNumbers.toArray();
+   }
+
+   public void setLogger(PrintStream logger) {
+      this.logger = logger;
    }
 }

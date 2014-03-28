@@ -1,18 +1,20 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
    <H2>Test failure matrix</H2>
    <table>
-      <tr>
-         <j:forEach var="bn" items="${it.buildNumbers}">
-            <th>${bn}</th>
-         </j:forEach>
-      </tr>
-      <j:forEach var="s" items="${it.spreads}" indexVar="row">
+      <tbody>
          <tr>
-         <j:forEach var="res" items="${s}" indexVar="col">
-            <td>${row}:${col}</td>
-         </j:forEach>
+            <j:forEach var="bn" items="${it.buildNumbers}">
+               <th>${bn}</th>
+            </j:forEach>
          </tr>
-      </j:forEach>
+         <j:forEach var="s" items="${it.spreads}" indexVar="row">
+            <tr>
+            <j:forEach var="res" items="${s}" indexVar="col">
+               <td>${row}:${col}</td>
+            </j:forEach>
+            </tr>
+         </j:forEach>
+      </tbody>
    </table>
 
    ${it.theMatrix} YyYYYYYYYYYYY

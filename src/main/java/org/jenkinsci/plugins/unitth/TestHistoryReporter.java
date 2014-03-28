@@ -62,6 +62,7 @@ public class TestHistoryReporter extends Recorder {
       PluginAction pa = new PluginAction(project);
       pa.setTheMatrix(testCaseMatrix);
       pa.setBuildNumbers(buildNumbers);
+      pa.setLogger(logger); // REMOVE
       return pa;
    }
 
@@ -70,7 +71,7 @@ public class TestHistoryReporter extends Recorder {
       throws InterruptedException, FileNotFoundException, IOException {
       project = build.getProject();
       logger = listener.getLogger();
-      logger.println("[unitth] Calculating history report...");
+      logger.println("[unitth] Calculating test matrix...");
       readBuildTestReports();
       populateMatrix();
 
