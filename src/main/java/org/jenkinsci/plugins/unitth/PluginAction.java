@@ -67,11 +67,13 @@ public class PluginAction implements ProminentProjectAction,
    */
 
    // Map to array of nulls and
-   /*
-   public ArrayList<TreeMap<Integer, TestCase>> getSpreads() {
 
+   public String[][] getSpreads() {
+      int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
+      String[][] ss = new String[diff][matrix.size()];
+      // populate-it
+      return ss;
    }
-   */
 
    public String getSomething() {
       return "SOMETHING";
