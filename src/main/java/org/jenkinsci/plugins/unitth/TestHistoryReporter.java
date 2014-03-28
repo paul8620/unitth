@@ -62,7 +62,6 @@ public class TestHistoryReporter extends Recorder {
       PluginAction pa = new PluginAction(project);
       pa.setTheMatrix(testCaseMatrix);
       pa.setBuildNumbers(buildNumbers);
-      pa.setLogger(logger); // REMOVE
       return pa;
    }
 
@@ -77,6 +76,10 @@ public class TestHistoryReporter extends Recorder {
 
       // TEMP
       failureMatrixToConsole();
+
+      int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
+      String[][] ss = new String[testCaseMatrix.size()][diff];
+      logger.print("Rows: "+testCaseMatrix.size()+" Columns: "+diff+" (from "+buildNumbers.last()+"-"+buildNumbers.first()+" )");
 /*
       // Only on the job page
       PluginAction buildAction;
