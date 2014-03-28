@@ -8,6 +8,7 @@ import org.kohsuke.stapler.StaplerProxy;
 
 import java.io.Serializable;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 //
 // Action performed on the build page.
@@ -15,8 +16,9 @@ import java.util.TreeMap;
 public class PluginAction implements ProminentProjectAction,
    Serializable, StaplerProxy {
 
-   private TreeMap<String,TestCaseMatrix> testCaseMatrix;
-   private String theMatrix;
+   private String theMatrix; // REMOVABLE
+   private TreeMap<String,TestCaseMatrix> matrix;
+   private TreeSet<Integer> buildNumbers;
 /*
    public PluginAction(TreeMap<String,TestCaseMatrix> testCaseMatrix) {
       this.testCaseMatrix = testCaseMatrix;
@@ -38,8 +40,8 @@ public class PluginAction implements ProminentProjectAction,
    }
 */
 
-   public void setTheMatrix(String matrixTable) {
-      theMatrix = matrixTable;
+   public void setTheMatrix(TreeMap<String,TestCaseMatrix> matrix) {
+      this.matrix = matrix;
    }
 
    public String getIconFileName() {
@@ -58,11 +60,28 @@ public class PluginAction implements ProminentProjectAction,
       return null;
    }
 
-   public String getTheMatrix() {
+   /*
+   public ArrayList<TestCaseMatrix> getTheMatrix() {
       return theMatrix;
    }
+   */
+
+   // Map to array of nulls and
+   /*
+   public ArrayList<TreeMap<Integer, TestCase>> getSpreads() {
+
+   }
+   */
 
    public String getSomething() {
       return "SOMETHING";
+   }
+
+   public void setBuildNumbers(TreeSet<Integer> buildNumbers) {
+      this.buildNumbers = buildNumbers;
+   }
+
+   public Object[] getBuildNumbers() {
+      return buildNumbers.toArray();
    }
 }

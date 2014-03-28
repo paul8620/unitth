@@ -1,4 +1,14 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+
+   <table>
+      <tr>
+         <j:forEach var="s" items="${it.buildNumbers}">
+            <th>s</th>
+         </j:forEach>
+      </tr>
+      
+   </table>
+
    ${it.theMatrix} YyYYYYYYYYYYY
    ${it.something}
 </j:jelly>

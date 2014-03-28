@@ -54,11 +54,17 @@ public class TestHistoryReporter extends Recorder {
       this.name = name;
    }
 
+   //
+   // THE MAGIC GLUE!!!! -> triggers the data to end up on the job main page...
+   //
    @Override
    public Action getProjectAction(final AbstractProject<?, ?> project) {
-      return new PluginAction(project);
+      PluginAction pa = new PluginAction(project);
+      pa.setTheMatrix(testCaseMatrix);
+      pa.setBuildNumbers(buildNumbers);
+      return pa;
    }
-   
+
    @Override
    public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
       throws InterruptedException, FileNotFoundException, IOException {
@@ -70,14 +76,15 @@ public class TestHistoryReporter extends Recorder {
 
       // TEMP
       failureMatrixToConsole();
-
+/*
+      // Only on the job page
       PluginAction buildAction;
       //buildAction = new PluginAction(failureMatrix());
       buildAction = new PluginAction(project);
       buildAction.setTheMatrix(failureMatrix());
       build.addAction(buildAction);
       build.save();
-
+*/
       return true;
    }
 
