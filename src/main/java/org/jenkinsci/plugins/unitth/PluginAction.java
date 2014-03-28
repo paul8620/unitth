@@ -1,5 +1,7 @@
 package org.jenkinsci.plugins.unitth;
 
+import hudson.model.AbstractBuild;
+import hudson.model.AbstractProject;
 import hudson.model.ProminentProjectAction;
 import org.jenkinsci.plugins.unitth.entities.TestCaseMatrix;
 import org.kohsuke.stapler.StaplerProxy;
@@ -24,7 +26,18 @@ public class PluginAction implements ProminentProjectAction,
    }
 */
 
+   @SuppressWarnings("rawtypes")
+   private AbstractProject<? extends AbstractProject, ? extends AbstractBuild> project;
+
+   public PluginAction(AbstractProject<? extends AbstractProject, ? extends AbstractBuild> project) {
+      this.project = project;
+   }
+/*
    public PluginAction(String matrixTable) {
+      theMatrix = matrixTable;
+   }
+*/
+   public void setTheMatrix(String matrixTable) {
       theMatrix = matrixTable;
    }
 

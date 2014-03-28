@@ -66,7 +66,9 @@ public class TestHistoryReporter extends Recorder {
       failureMatrixToConsole();
 
       PluginAction buildAction;
-      buildAction = new PluginAction(failureMatrix());
+      //buildAction = new PluginAction(failureMatrix());
+      buildAction = new PluginAction(project);
+      buildAction.setTheMatrix(failureMatrix());
       build.addAction(buildAction);
       build.save();
 

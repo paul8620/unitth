@@ -1,18 +1,28 @@
 <?jelly escape-by-default='true'?>
+<!--
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
          xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:p="/lib/hudson/project">
 
    <div class="summary_report_project" align="left">
       <h1>Result of build #${from.getLastFinishedBuild().getNumber()}</h1>
 
-      <!-- For each fileError-->
-      <!--
       <j:if test="${from != null}">
          <j:forEach var="c" items="${from.getFileError()}" indexVar="indexC">
             <h2 style="color:${c[0]};">${c[1]}: <a style="color:${c[2]};" href="${c[3]}">${c[5]}</a></h2>
          </j:forEach>
       </j:if>
-      -->
       ${it.something}
+   </div>
+</j:jelly>
+-->
+
+<j:jelly xmlns:j="jelly:core">
+   <div style="padding:30px">
+      <table style="padding-bottom:15px;">
+         <tr>
+            <td>AAAA</td>
+            <td><h1 style="padding-left:20px;">Built branches</h1></td>
+         </tr>
+      </table>
    </div>
 </j:jelly>
