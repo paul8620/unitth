@@ -1,5 +1,5 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
 
-   <tr><td colspan="2">${it.theMatrix}</td></tr>
+   <tr><td colspan="2">${it.something} XXxXXXXXXXX ${it.theMatrix}</td></tr>
 
 </j:jelly>
