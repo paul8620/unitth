@@ -4,6 +4,7 @@ import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.ProminentProjectAction;
 import org.jenkinsci.plugins.unitth.entities.TestCaseMatrix;
+import org.jenkinsci.plugins.unitth.entities.TestCaseVerdict;
 import org.kohsuke.stapler.StaplerProxy;
 
 import java.io.Serializable;
@@ -66,12 +67,22 @@ public class PluginAction implements ProminentProjectAction,
    }
    */
 
-   // Map to array of nulls and
-
    public String[][] getSpreads() {
       int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
       String[][] ss = new String[matrix.size()][diff+1]; // +1 since it is a range
-      // populate-it
+      int row = 0;
+      for (TestCaseMatrix tcm : matrix.values()) {
+         for (int column=0; column<diff+1; column++) {
+            String verdictString = "-";
+            if (tcm.getSpread().get(column)==null) {
+               verdictString = ".";
+            }
+            else if (tcm.getSpread().get(column).getVerdict()==TestCaseVerdict.FAILED) {
+               verdictString = "x";
+            }
+            ss[row][column] = verdictString;
+         }
+      }
       return ss;
    }
 
