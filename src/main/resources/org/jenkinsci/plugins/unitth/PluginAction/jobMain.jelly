@@ -18,7 +18,4 @@
          </j:forEach>
       </tbody>
    </table>
-
-   ${it.theMatrix} YyYYYYYYYYYYY
-   ${it.something}
 </j:jelly>

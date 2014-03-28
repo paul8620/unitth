@@ -271,6 +271,8 @@ public class TestHistoryReporter extends Recorder {
       return failsOnlySpread;
    }
 
+   // R E M O V E
+
    //
    // PRINTERS
    //
@@ -320,6 +322,8 @@ public class TestHistoryReporter extends Recorder {
       }
       return theMatrix;
    }
+
+   // R E M O V E 2 H E R E
 
    public String getName() {
       return name;

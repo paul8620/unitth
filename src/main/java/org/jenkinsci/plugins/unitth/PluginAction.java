@@ -3,11 +3,13 @@ package org.jenkinsci.plugins.unitth;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.ProminentProjectAction;
+import org.jenkinsci.plugins.unitth.entities.TestCase;
 import org.jenkinsci.plugins.unitth.entities.TestCaseMatrix;
 import org.jenkinsci.plugins.unitth.entities.TestCaseVerdict;
 import org.kohsuke.stapler.StaplerProxy;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -17,17 +19,8 @@ import java.util.TreeSet;
 public class PluginAction implements ProminentProjectAction,
    Serializable, StaplerProxy {
 
-   private String theMatrix; // REMOVABLE
    private TreeMap<String,TestCaseMatrix> matrix;
    private TreeSet<Integer> buildNumbers;
-/*
-   public PluginAction(TreeMap<String,TestCaseMatrix> testCaseMatrix) {
-      this.testCaseMatrix = testCaseMatrix;
-
-
-
-   }
-*/
 
    @SuppressWarnings("rawtypes")
    private AbstractProject<? extends AbstractProject, ? extends AbstractBuild> project;
@@ -35,14 +28,16 @@ public class PluginAction implements ProminentProjectAction,
    public PluginAction(AbstractProject<? extends AbstractProject, ? extends AbstractBuild> project) {
       this.project = project;
    }
-/*
-   public PluginAction(String matrixTable) {
-      theMatrix = matrixTable;
-   }
-*/
 
+   // Filter out the 100% passing tests
    public void setTheMatrix(TreeMap<String,TestCaseMatrix> matrix) {
-      this.matrix = matrix;
+      TreeMap<String,TestCaseMatrix> failuresOnly = new TreeMap<String,TestCaseMatrix>();
+      for (TestCaseMatrix tcm : matrix.values()) {
+         if (tcm.hasFailed()) {
+            failuresOnly.put(tcm.getQName(), tcm);
+         }
+      }
+      this.matrix = failuresOnly;
    }
 
    public String getIconFileName() {
@@ -60,12 +55,6 @@ public class PluginAction implements ProminentProjectAction,
    public Object getTarget() {
       return null;
    }
-
-   /*
-   public ArrayList<TestCaseMatrix> getTheMatrix() {
-      return theMatrix;
-   }
-   */
 
    public String[][] getSpreads() {
       int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
@@ -88,8 +77,14 @@ public class PluginAction implements ProminentProjectAction,
       return ss;
    }
 
-   public String getSomething() {
-      return "SOMETHING";
+   public ArrayList<TreeMap<Integer, TestCase>> getTestCaseFailureOnlySpread() {
+      ArrayList<TreeMap<Integer, TestCase>> failsOnlySpread = new ArrayList<TreeMap<Integer, TestCase>>();
+      for (TestCaseMatrix tcm : matrix.values()) {
+         if (tcm.hasFailed()) {
+            failsOnlySpread.add(tcm.getSpread());
+         }
+      }
+      return failsOnlySpread;
    }
 
    public void setBuildNumbers(TreeSet<Integer> buildNumbers) {
