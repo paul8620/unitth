@@ -82,6 +82,7 @@ public class PluginAction implements ProminentProjectAction,
             }
             ss[row][column] = verdictString;
          }
+         row++;
       }
       return ss;
    }
