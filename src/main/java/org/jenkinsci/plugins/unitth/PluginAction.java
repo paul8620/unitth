@@ -70,7 +70,7 @@ public class PluginAction implements ProminentProjectAction,
 
    public String[][] getSpreads() {
       int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
-      String[][] ss = new String[matrix.size()][diff];
+      String[][] ss = new String[matrix.size()][diff+1]; // +1 since it is a range
       // populate-it
       return ss;
    }
