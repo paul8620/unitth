@@ -3,13 +3,11 @@ package org.jenkinsci.plugins.unitth;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.ProminentProjectAction;
-import org.jenkinsci.plugins.unitth.entities.TestCase;
 import org.jenkinsci.plugins.unitth.entities.TestCaseMatrix;
 import org.jenkinsci.plugins.unitth.entities.TestCaseVerdict;
 import org.kohsuke.stapler.StaplerProxy;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -24,6 +22,8 @@ public class PluginAction implements ProminentProjectAction,
 
    @SuppressWarnings("rawtypes")
    private AbstractProject<? extends AbstractProject, ? extends AbstractBuild> project;
+
+   public PluginAction() {}
 
    public PluginAction(AbstractProject<? extends AbstractProject, ? extends AbstractBuild> project) {
       this.project = project;
@@ -75,16 +75,6 @@ public class PluginAction implements ProminentProjectAction,
          row++;
       }
       return ss;
-   }
-
-   public ArrayList<TreeMap<Integer, TestCase>> getTestCaseFailureOnlySpread() {
-      ArrayList<TreeMap<Integer, TestCase>> failsOnlySpread = new ArrayList<TreeMap<Integer, TestCase>>();
-      for (TestCaseMatrix tcm : matrix.values()) {
-         if (tcm.hasFailed()) {
-            failsOnlySpread.add(tcm.getSpread());
-         }
-      }
-      return failsOnlySpread;
    }
 
    public void setBuildNumbers(TreeSet<Integer> buildNumbers) {
