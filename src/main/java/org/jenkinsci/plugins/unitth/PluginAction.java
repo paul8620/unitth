@@ -1,6 +1,6 @@
 package org.jenkinsci.plugins.unitth;
 
-import hudson.model.Action;
+import hudson.model.ProminentProjectAction;
 import org.jenkinsci.plugins.unitth.entities.TestCaseMatrix;
 import org.kohsuke.stapler.StaplerProxy;
 
@@ -10,7 +10,7 @@ import java.util.TreeMap;
 //
 // Action performed on the build page.
 //
-public class PluginAction implements Action,
+public class PluginAction implements ProminentProjectAction,
    Serializable, StaplerProxy {
 
    private TreeMap<String,TestCaseMatrix> testCaseMatrix;
