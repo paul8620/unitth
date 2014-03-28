@@ -69,10 +69,11 @@ public class PluginAction implements ProminentProjectAction,
 
    public String[][] getSpreads() {
       int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
-      String[][] ss = new String[matrix.size()][diff+1]; // +1 since it is a range
+      String[][] ss = new String[matrix.size()][diff+2]; // +2 since it is a range and we need the name
       int row = 0;
       for (TestCaseMatrix tcm : matrix.values()) {
-         for (int column=0; column<diff+1; column++) {
+         ss[row][0] = tcm.getQName();
+         for (int column=1; column<diff+2; column++) {
             String verdictString = "-";
             if (tcm.getSpread().get(column)==null) {
                verdictString = ".";

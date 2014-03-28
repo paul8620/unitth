@@ -52,4 +52,8 @@ public class TestCaseMatrix {
       }
       return false;
    }
+
+   public String getQName() {
+      return className+"."+name;
+   }
 }
