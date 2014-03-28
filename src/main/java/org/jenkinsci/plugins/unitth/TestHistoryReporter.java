@@ -4,6 +4,7 @@ import hudson.Extension;
 import hudson.Launcher;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
+import hudson.model.Action;
 import hudson.model.BuildListener;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.BuildStepMonitor;
@@ -53,6 +54,11 @@ public class TestHistoryReporter extends Recorder {
       this.name = name;
    }
 
+   @Override
+   public Action getProjectAction(final AbstractProject<?, ?> project) {
+      return new PluginAction(project);
+   }
+   
    @Override
    public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
       throws InterruptedException, FileNotFoundException, IOException {

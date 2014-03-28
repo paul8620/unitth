@@ -37,6 +37,7 @@ public class PluginAction implements ProminentProjectAction,
       theMatrix = matrixTable;
    }
 */
+
    public void setTheMatrix(String matrixTable) {
       theMatrix = matrixTable;
    }
