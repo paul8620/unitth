@@ -47,4 +47,8 @@ public class PluginAction implements Action,
    public String getTheMatrix() {
       return theMatrix;
    }
+
+   public String getSomething() {
+      return "SOMETHING";
+   }
 }
