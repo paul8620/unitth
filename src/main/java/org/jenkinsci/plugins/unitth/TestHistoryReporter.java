@@ -33,8 +33,8 @@ import java.util.Stack;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+// Observed
 // Adding and removing the matrix as a post build step will trigger the rendering of the matrix on the job page
-
 
 // TODO, configurable: no runs back. 0-no-of-available
 // TODO, configurable, progress counter....
@@ -45,8 +45,8 @@ public class TestHistoryReporter extends Recorder {
    private String name;
 
    private static ArrayList<TestReport> buildReports = new ArrayList<TestReport>();
-   private TreeMap<String,TestCaseMatrix> testCaseMatrix = new TreeMap<String,TestCaseMatrix>();
-   private TreeSet<Integer> buildNumbers = new TreeSet<Integer>();
+   private static TreeMap<String,TestCaseMatrix> testCaseMatrix = new TreeMap<String,TestCaseMatrix>();
+   private static TreeSet<Integer> buildNumbers = new TreeSet<Integer>();
 
    // REMOVE
    private static String LOG_MESSAGE = "UNSET";
@@ -69,7 +69,7 @@ public class TestHistoryReporter extends Recorder {
       if (testCaseMatrix!=null) {
          pa.setBuildNumbers(buildNumbers);
          pa.setTheMatrix(testCaseMatrix);
-         LOG_MESSAGE="TCM.size: "+testCaseMatrix.size();
+         LOG_MESSAGE+="-> getProjectAction TCM.size: "+testCaseMatrix.size();
       }
       return pa;
    }
@@ -77,6 +77,7 @@ public class TestHistoryReporter extends Recorder {
    @Override
    public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
       throws InterruptedException, FileNotFoundException, IOException {
+      LOG_MESSAGE+="-> perform ";
       project = build.getProject();
       logger = listener.getLogger();
       logger.println("[unitth] Calculating test matrix...");
