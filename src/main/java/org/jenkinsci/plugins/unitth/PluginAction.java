@@ -56,6 +56,7 @@ public class PluginAction implements ProminentProjectAction,
       return null;
    }
 
+   // Shall we generate the full HTML cell, with colour and all?
    public String[][] getSpreads() {
       int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
       String[][] ss = new String[matrix.size()][diff+2]; // +2 since it is a range and we need the name

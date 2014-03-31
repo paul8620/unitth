@@ -150,9 +150,10 @@ public class MatrixTest {
       assertEquals("No unique tests that includes failures", 2, ((TreeMap<String, TestCaseMatrix>) matrix.get(pa)).size());
 
       String[][] ss = pa.getSpreads();
+      System.out.println("The matrix as in the Jenkins view.");
       for (String[] sr : ss) {
          for (String sc : sr) {
-            System.out.print(sc);
+            System.out.print(sc+" ");
          }
          System.out.print("\n");
       }

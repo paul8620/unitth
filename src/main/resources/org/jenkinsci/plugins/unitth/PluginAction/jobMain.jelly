@@ -11,7 +11,7 @@
          <j:forEach var="s" items="${it.spreads}" indexVar="row">
             <tr>
             <j:forEach var="res" items="${s}" indexVar="col">
-               <!--<td>${row}:${col}</td>-->
+               <td>${row}:${col}</td>
                <td>${res}</td>
             </j:forEach>
             </tr>
