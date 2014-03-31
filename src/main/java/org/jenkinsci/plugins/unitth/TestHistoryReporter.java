@@ -65,6 +65,17 @@ public class TestHistoryReporter extends Recorder {
    //
    @Override
    public Action getProjectAction(final AbstractProject<?, ?> project) {
+
+      AbstractBuild<?, ?> build = project.getLastBuild();
+      //logger = listener.getLogger();
+      //logger.println("[unitth] Calculating test matrix...");
+      try {
+         readBuildTestReports();
+      } catch (Exception e) {
+         throw new RuntimeException("reading build reports");
+      }
+      populateMatrix();
+
       PluginAction pa = new PluginAction(project);
       if (testCaseMatrix!=null) {
          pa.setBuildNumbers(buildNumbers);
@@ -78,6 +89,7 @@ public class TestHistoryReporter extends Recorder {
    public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
       throws InterruptedException, FileNotFoundException, IOException {
       LOG_MESSAGE+="-> perform ";
+      /*
       project = build.getProject();
       logger = listener.getLogger();
       logger.println("[unitth] Calculating test matrix...");
@@ -98,7 +110,7 @@ public class TestHistoryReporter extends Recorder {
       buildAction = new PluginAction(project);
       buildAction.setTheMatrix(testCaseMatrix);
       build.addAction(buildAction);
-      build.save();
+      build.save();*/
       return true;
    }
 
