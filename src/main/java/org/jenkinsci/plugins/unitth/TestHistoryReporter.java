@@ -38,7 +38,7 @@ import java.util.TreeSet;
 public class TestHistoryReporter extends Recorder {
 
    private AbstractProject project = null;
-   private static PrintStream logger = null;
+   public static PrintStream logger = null; // Change to private
    private String name;
 
    private static ArrayList<TestReport> buildReports = new ArrayList<TestReport>();

@@ -3,7 +3,7 @@
    <table>
       <tbody>
          <tr>
-            <th>QNAME</th>
+            <th>Qualified Name</th>
             <j:forEach var="bn" items="${it.buildNumbers}">
                <th>${bn}</th>
             </j:forEach>
