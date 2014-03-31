@@ -27,8 +27,6 @@ public class MatrixTest {
 
    @BeforeClass
    public static void beforeAll() throws Exception {
-      TestHistoryReporter thr = new TestHistoryReporter("");
-
       // Reflection stuff
       Field logger = thr.getClass().getDeclaredField("logger");
       logger.setAccessible(true);

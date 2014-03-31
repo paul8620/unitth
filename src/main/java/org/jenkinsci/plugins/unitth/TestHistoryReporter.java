@@ -45,8 +45,8 @@ public class TestHistoryReporter extends Recorder {
    private String name;
 
    private static ArrayList<TestReport> buildReports = new ArrayList<TestReport>();
-   private static TreeMap<String,TestCaseMatrix> testCaseMatrix = new TreeMap<String,TestCaseMatrix>();
-   private static TreeSet<Integer> buildNumbers = new TreeSet<Integer>();
+   private TreeMap<String,TestCaseMatrix> testCaseMatrix = new TreeMap<String,TestCaseMatrix>();
+   private TreeSet<Integer> buildNumbers = new TreeSet<Integer>();
 
    // REMOVE
    private static String LOG_MESSAGE = "UNSET";
