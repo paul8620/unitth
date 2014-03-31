@@ -135,7 +135,7 @@ public class MatrixTest {
 
    @Test
    public void sortOutFailedTestsInAction() throws Exception {
-      PluginAction pa = new PluginAction();
+      PluginAction pa = new PluginAction(null);
       pa.setTheMatrix(tcmTree);
 
       Field buildNumbers = thr.getClass().getDeclaredField("buildNumbers");

@@ -20,10 +20,9 @@ public class PluginAction implements ProminentProjectAction,
    private TreeMap<String,TestCaseMatrix> matrix;
    private TreeSet<Integer> buildNumbers;
 
+   // Needed?
    @SuppressWarnings("rawtypes")
    private AbstractProject<? extends AbstractProject, ? extends AbstractBuild> project;
-
-   public PluginAction() {}
 
    public PluginAction(AbstractProject<? extends AbstractProject, ? extends AbstractBuild> project) {
       this.project = project;
