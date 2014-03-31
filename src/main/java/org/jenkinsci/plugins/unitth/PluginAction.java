@@ -67,15 +67,21 @@ public class PluginAction implements ProminentProjectAction,
       TestHistoryReporter.logger.println("GetSpreads.size:"+matrix.size());
       for (TestCaseMatrix tcm : matrix.values()) {
          ss[row][0] = tcm.getQName();
-         for (int column=1; column<diff+2; column++) {
+         //for (int column=1; column<diff+2; column++) { // Build numbers
+         int column = 1;
+         for (int bn : buildNumbers) {
             String verdictString = "-";
-            if (tcm.getSpread().get(column)==null) {
+            if (tcm.getSpread().get(bn)==null) {
                verdictString = ".";
             }
             else if (tcm.getSpread().get(column).getVerdict()==TestCaseVerdict.FAILED) {
                verdictString = "x";
             }
+            else if (tcm.getSpread().get(column).getVerdict()==TestCaseVerdict.SKIPPED) {
+               verdictString = "s";
+            }
             ss[row][column] = verdictString;
+            column++;
          }
          row++;
       }

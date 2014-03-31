@@ -111,11 +111,11 @@ public class TestHistoryReporter extends Recorder {
          // what about testng or custom?
          logger.println("daFile: "+f.getAbsoluteFile());
          if (f.exists()) {
+            logger.println("parsing . . .");
             parseReport(f);
             buildReports.get(buildReports.size()-1).setBuildNumber(currentBuild.getNumber());
             buildNumbers.add(currentBuild.getNumber());
          }
-         logger.println("junit: "+currentBuild.getRootDir()); // REMOVE
       }
    }
 
