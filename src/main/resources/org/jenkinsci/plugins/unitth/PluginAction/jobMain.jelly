@@ -5,14 +5,14 @@
          <tr>
             <th>Qualified Name</th>
             <j:forEach var="bn" items="${it.buildNumbers}">
-               <th style="border: 1px solid black;border-collapse:collapse;">${bn}</th>
+               <th style="border: 1px dimgray;border-collapse:collapse;">${bn}</th>
             </j:forEach>
          </tr>
          <j:forEach var="s" items="${it.spreads}" indexVar="row">
             <tr>
             <j:forEach var="res" items="${s}" indexVar="col">
                <!--td>${row}:${col}</td-->
-               <td style="border: 1px solid black;border-collapse:collapse;">${res}</td>
+               <td style="border: 1px dimgray;border-collapse:collapse;">${res}</td>
             </j:forEach>
             </tr>
          </j:forEach>

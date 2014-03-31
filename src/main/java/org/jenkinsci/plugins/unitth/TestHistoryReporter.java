@@ -4,11 +4,11 @@ import hudson.Extension;
 import hudson.Launcher;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
+import hudson.model.Action;
 import hudson.model.BuildListener;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Publisher;
-import hudson.tasks.Recorder;
 import jenkins.model.Jenkins;
 import org.jenkinsci.plugins.unitth.entities.TestCase;
 import org.jenkinsci.plugins.unitth.entities.TestCaseMatrix;
@@ -27,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 import java.util.TreeMap;
@@ -37,7 +38,8 @@ import java.util.TreeSet;
 
 // TODO, configurable: no runs back. 0-no-of-available
 // TODO, configurable, progress counter....
-public class TestHistoryReporter extends Recorder {
+public class TestHistoryReporter extends Publisher {
+//public class TestHistoryReporter extends Recorder {
 
    private AbstractProject project = null;
    public static PrintStream logger = null; // Change to private
@@ -74,7 +76,7 @@ public class TestHistoryReporter extends Recorder {
       return pa;
    }
    */
-/*
+
    @Override
    public Collection<? extends Action> getProjectActions(final AbstractProject<?, ?> project) {
       PluginAction pa = new PluginAction(project);
@@ -87,7 +89,12 @@ public class TestHistoryReporter extends Recorder {
       collection.add(pa);
       return collection;
    }
-*/
+
+   @Override
+   public boolean needsToRunAfterFinalized() {
+      return true;
+   }
+
    @Override
    public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
       throws InterruptedException, FileNotFoundException, IOException {
@@ -108,10 +115,12 @@ public class TestHistoryReporter extends Recorder {
 
       // Build page PluginAction/summary.jelly
       // TODO: Configurable when setting up the job.
+      /*
       PluginAction buildAction = new PluginAction(project);
       buildAction.setTheMatrix(testCaseMatrix);
       build.addAction(buildAction);
       build.save();
+      */
       return true;
    }
 
