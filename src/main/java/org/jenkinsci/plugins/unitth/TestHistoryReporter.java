@@ -66,9 +66,11 @@ public class TestHistoryReporter extends Recorder {
    @Override
    public Action getProjectAction(final AbstractProject<?, ?> project) {
       PluginAction pa = new PluginAction(project);
-      pa.setBuildNumbers(buildNumbers);
-      pa.setTheMatrix(testCaseMatrix);
-      LOG_MESSAGE="TCM.size: "+testCaseMatrix.size();
+      if (testCaseMatrix!=null) {
+         pa.setBuildNumbers(buildNumbers);
+         pa.setTheMatrix(testCaseMatrix);
+         LOG_MESSAGE="TCM.size: "+testCaseMatrix.size();
+      }
       return pa;
    }
 
