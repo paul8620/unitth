@@ -33,6 +33,9 @@ import java.util.Stack;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+// Adding and removing the matrix as a post build step will trigger the rendering of the matrix on the job page
+
+
 // TODO, configurable: no runs back. 0-no-of-available
 // TODO, configurable, progress counter....
 public class TestHistoryReporter extends Recorder {
@@ -86,9 +89,9 @@ public class TestHistoryReporter extends Recorder {
       logger.println("Rows: "+testCaseMatrix.size()+" Columns: "+diff+" (from "+buildNumbers.last()+"-"+buildNumbers.first()+" )");
       logger.println(LOG_MESSAGE);
 
-      // Only on the job page
+      // Build page PluginAction/summary.jelly
+      // TODO: Configurable when setting up the job.
       PluginAction buildAction;
-      //buildAction = new PluginAction(failureMatrix());
       buildAction = new PluginAction(project);
       buildAction.setTheMatrix(testCaseMatrix);
       build.addAction(buildAction);
