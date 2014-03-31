@@ -45,6 +45,9 @@ public class TestHistoryReporter extends Recorder {
    private static TreeMap<String,TestCaseMatrix> testCaseMatrix = new TreeMap<String,TestCaseMatrix>();
    private static TreeSet<Integer> buildNumbers = new TreeSet<Integer>();
 
+   // REMOVE
+   private static String LOG_MESSAGE = "UNSET";
+
    public BuildStepMonitor getRequiredMonitorService() {
       return BuildStepMonitor.NONE;
    }
@@ -62,6 +65,7 @@ public class TestHistoryReporter extends Recorder {
       PluginAction pa = new PluginAction(project);
       pa.setBuildNumbers(buildNumbers);
       pa.setTheMatrix(testCaseMatrix);
+      LOG_MESSAGE="TCM.size: "+testCaseMatrix.size();
       return pa;
    }
 
@@ -79,7 +83,8 @@ public class TestHistoryReporter extends Recorder {
 
       int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
       String[][] ss = new String[testCaseMatrix.size()][diff];
-      logger.print("Rows: "+testCaseMatrix.size()+" Columns: "+diff+" (from "+buildNumbers.last()+"-"+buildNumbers.first()+" )");
+      logger.println("Rows: "+testCaseMatrix.size()+" Columns: "+diff+" (from "+buildNumbers.last()+"-"+buildNumbers.first()+" )");
+      logger.println(LOG_MESSAGE);
 /*
       // Only on the job page
       PluginAction buildAction;
