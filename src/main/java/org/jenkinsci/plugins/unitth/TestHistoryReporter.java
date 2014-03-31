@@ -85,15 +85,14 @@ public class TestHistoryReporter extends Recorder {
       String[][] ss = new String[testCaseMatrix.size()][diff];
       logger.println("Rows: "+testCaseMatrix.size()+" Columns: "+diff+" (from "+buildNumbers.last()+"-"+buildNumbers.first()+" )");
       logger.println(LOG_MESSAGE);
-/*
+
       // Only on the job page
       PluginAction buildAction;
       //buildAction = new PluginAction(failureMatrix());
       buildAction = new PluginAction(project);
-      buildAction.setTheMatrix(failureMatrix());
+      buildAction.setTheMatrix(testCaseMatrix);
       build.addAction(buildAction);
       build.save();
-*/
       return true;
    }
 
