@@ -80,11 +80,13 @@ public class TestHistoryReporter extends Publisher {
    @Override
    public Collection<? extends Action> getProjectActions(final AbstractProject<?, ?> project) {
       PluginAction pa = new PluginAction(project);
+      /*
       if (testCaseMatrix!=null) {
          pa.setBuildNumbers(buildNumbers);
          pa.setTheMatrix(testCaseMatrix);
          LOG_MESSAGE+="-> getProjectActions TCM.size: "+testCaseMatrix.size();
       }
+      */
       Collection<PluginAction> collection = new ArrayList<PluginAction>();
       collection.add(pa);
       return collection;

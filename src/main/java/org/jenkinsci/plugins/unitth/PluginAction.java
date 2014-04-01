@@ -23,12 +23,16 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 //
 // Action performed on the build page.
 //
 public class PluginAction implements ProminentProjectAction,
    Serializable, StaplerProxy {
+
+   private static Logger theLogger = Logger.getLogger(PluginAction.class.getName());
 
    private TreeMap<String,TestCaseMatrix> matrix = new TreeMap<String,TestCaseMatrix>();
    private TreeSet<Integer> buildNumbers = new TreeSet<Integer>();
@@ -40,6 +44,7 @@ public class PluginAction implements ProminentProjectAction,
    private AbstractProject<? extends AbstractProject, ? extends AbstractBuild> project;
 
    public PluginAction(AbstractProject<? extends AbstractProject, ? extends AbstractBuild> project) {
+      theLogger.setLevel(Level.INFO);
       this.project = project;
    }
 
@@ -76,7 +81,7 @@ public class PluginAction implements ProminentProjectAction,
     * @return The matrix to print out.
     */
    public String[][] getSpreads() throws FileNotFoundException {
-
+      theLogger.info("getSpreads");
       // Try getting all the data at this point.
       readBuildTestReports();
       populateMatrix();
@@ -129,14 +134,14 @@ public class PluginAction implements ProminentProjectAction,
          //logger.println("BUILD: "+currentBuild.getNumber());
          //logger.println("jenks: "+ Jenkins.getInstance().getRootUrl());
          //logger.println("build: "+currentBuild.getRootDir());
-         System.out.println("Build: "+currentBuild.getNumber()+" / "+currentBuild.getRootDir());
+         theLogger.info("Build: "+currentBuild.getNumber()+" / "+currentBuild.getRootDir());
          /* ALL THIS */
          File f = new File(currentBuild.getRootDir()+"/junitResult.xml"); ///+"/build/"+currentBuild.getNumber()+"/junitResult.xml"); // FIXME,
          // what about testng or custom?
          //logger.println("daFile: "+f.getAbsoluteFile());
          if (f.exists()) {
             //logger.println("parsing . . .");
-            System.out.println("parsing . . .");
+            theLogger.info("parsing . . .");
             parseReport(f);
             buildReports.get(buildReports.size()-1).setBuildNumber(currentBuild.getNumber());
             buildNumbers.add(currentBuild.getNumber());
