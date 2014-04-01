@@ -303,10 +303,12 @@ public class TestHistoryReporter extends Publisher {
    }
 
    public static TreeSet<Integer> getBuildNumbers() {
+      logger.println("called getBuildNumbers");
       return buildNumbers;
    }
 
    public static TreeMap<String,TestCaseMatrix> getTestFailingMatrixes() {
+      logger.println("called getTestFailingMatrixes");
       TreeMap<String,TestCaseMatrix> failsOnlySpread = new TreeMap<String,TestCaseMatrix>();
       for (TestCaseMatrix tcm : testCaseMatrix.values()) {
          if (tcm.hasFailed()) {
