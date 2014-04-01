@@ -146,7 +146,7 @@ public class MatrixTest {
       Field matrix = pa.getClass().getDeclaredField("matrix");
       matrix.setAccessible(true);
       assertEquals("No unique tests that includes failures", 2, ((TreeMap<String, TestCaseMatrix>) matrix.get(pa)).size());
-
+/*
       String[][] ss = pa.getSpreads();
       System.out.println("The matrix as in the Jenkins view.");
       for (String[] sr : ss) {
@@ -155,5 +155,6 @@ public class MatrixTest {
          }
          System.out.print("\n");
       }
+*/
    }
 }
