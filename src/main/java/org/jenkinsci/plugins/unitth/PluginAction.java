@@ -94,7 +94,6 @@ public class PluginAction implements ProminentProjectAction,
       TestHistoryReporter.logger.println("GetSpreads.size:"+matrix.size());
       for (TestCaseMatrix tcm : matrix.values()) {
          ss[row][0] = tcm.getQName();
-         //for (int column=1; column<diff+2; column++) { // Build numbers
          int column = 1;
          for (int bn : buildNumbers) {
             String verdictString = "-";
@@ -130,12 +129,14 @@ public class PluginAction implements ProminentProjectAction,
          //logger.println("BUILD: "+currentBuild.getNumber());
          //logger.println("jenks: "+ Jenkins.getInstance().getRootUrl());
          //logger.println("build: "+currentBuild.getRootDir());
+         System.out.println("Build: "+currentBuild.getNumber()+" / "+currentBuild.getRootDir());
          /* ALL THIS */
          File f = new File(currentBuild.getRootDir()+"/junitResult.xml"); ///+"/build/"+currentBuild.getNumber()+"/junitResult.xml"); // FIXME,
          // what about testng or custom?
          //logger.println("daFile: "+f.getAbsoluteFile());
          if (f.exists()) {
             //logger.println("parsing . . .");
+            System.out.println("parsing . . .");
             parseReport(f);
             buildReports.get(buildReports.size()-1).setBuildNumber(currentBuild.getNumber());
             buildNumbers.add(currentBuild.getNumber());

@@ -98,11 +98,11 @@ public class TestHistoryReporter extends Publisher {
    @Override
    public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
       throws InterruptedException, FileNotFoundException, IOException {
+      logger = listener.getLogger();
+      logger.println("[unitth] Calculating test matrix...");
       /*
       LOG_MESSAGE+="-> perform ";
       project = build.getProject();
-      logger = listener.getLogger();
-      logger.println("[unitth] Calculating test matrix...");
       readBuildTestReports();
       populateMatrix();
       // TEMP
