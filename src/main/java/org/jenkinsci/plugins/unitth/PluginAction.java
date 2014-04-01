@@ -1,11 +1,8 @@
 package org.jenkinsci.plugins.unitth;
 
-import hudson.Extension;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.ProminentProjectAction;
-import hudson.tasks.BuildStepDescriptor;
-import hudson.tasks.Publisher;
 import hudson.util.RunList;
 import org.jenkinsci.plugins.unitth.entities.TestCase;
 import org.jenkinsci.plugins.unitth.entities.TestCaseMatrix;
@@ -175,7 +172,7 @@ public class PluginAction implements ProminentProjectAction,
          }
       }
    }
-
+/*
    @Extension
    public static class DescriptorImpl extends BuildStepDescriptor<Publisher> {
 
@@ -189,7 +186,7 @@ public class PluginAction implements ProminentProjectAction,
          return true;
       }
    }
-
+*/
 
    //
    // TMP RIPP FROM THR
