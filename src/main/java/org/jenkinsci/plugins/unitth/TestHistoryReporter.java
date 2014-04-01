@@ -9,7 +9,6 @@ import hudson.model.BuildListener;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Publisher;
-import jenkins.model.Jenkins;
 import org.jenkinsci.plugins.unitth.entities.TestCase;
 import org.jenkinsci.plugins.unitth.entities.TestCaseMatrix;
 import org.jenkinsci.plugins.unitth.entities.TestCaseVerdict;
@@ -102,7 +101,6 @@ public class TestHistoryReporter extends Publisher {
       throws InterruptedException, FileNotFoundException, IOException {
       logger = listener.getLogger();
       logger.println("[unitth] Calculating test matrix...");
-      /*
       LOG_MESSAGE+="-> perform ";
       project = build.getProject();
       readBuildTestReports();
@@ -114,7 +112,7 @@ public class TestHistoryReporter extends Publisher {
       String[][] ss = new String[testCaseMatrix.size()][diff];
       logger.println("Rows: "+testCaseMatrix.size()+" Columns: "+diff+" (from "+buildNumbers.last()+"-"+buildNumbers.first()+" )");
       logger.println(LOG_MESSAGE);
-      */
+
       // Build page PluginAction/summary.jelly
       // TODO: Configurable when setting up the job.
       /*
@@ -131,9 +129,7 @@ public class TestHistoryReporter extends Publisher {
       final List<? extends AbstractBuild<?, ?>> builds = project.getBuilds();
       for (AbstractBuild<?, ?> currentBuild : builds) {
          /* REMOVE */
-         logger.println("BUILD: "+currentBuild.getNumber());
-         logger.println("jenks: "+Jenkins.getInstance().getRootUrl());
-         logger.println("build: "+currentBuild.getRootDir());
+         logger.println("BUILD: "+currentBuild.getNumber()+" / "+currentBuild.getRootDir());
          /* ALL THIS */
          File f = new File(currentBuild.getRootDir()+"/junitResult.xml"); ///+"/build/"+currentBuild.getNumber()+"/junitResult.xml"); // FIXME,
          // what about testng or custom?
@@ -296,11 +292,25 @@ public class TestHistoryReporter extends Publisher {
    //
    // GETTERS
    //
-   public ArrayList<TreeMap<Integer, TestCase>> getTestCaseFailureOnlySpread() {
+   public static ArrayList<TreeMap<Integer, TestCase>> getTestCaseFailureOnlySpread() {
       ArrayList<TreeMap<Integer, TestCase>> failsOnlySpread = new ArrayList<TreeMap<Integer, TestCase>>();
       for (TestCaseMatrix tcm : testCaseMatrix.values()) {
          if (tcm.hasFailed()) {
             failsOnlySpread.add(tcm.getSpread());
+         }
+      }
+      return failsOnlySpread;
+   }
+
+   public static TreeSet<Integer> getBuildNumbers() {
+      return buildNumbers;
+   }
+
+   public static TreeMap<String,TestCaseMatrix> getTestFailingMatrixes() {
+      TreeMap<String,TestCaseMatrix> failsOnlySpread = new TreeMap<String,TestCaseMatrix>();
+      for (TestCaseMatrix tcm : testCaseMatrix.values()) {
+         if (tcm.hasFailed()) {
+            failsOnlySpread.put(tcm.getQName(), tcm);
          }
       }
       return failsOnlySpread;

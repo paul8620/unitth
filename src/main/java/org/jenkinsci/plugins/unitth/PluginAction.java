@@ -82,16 +82,21 @@ public class PluginAction implements ProminentProjectAction,
     */
    public String[][] getSpreads() throws FileNotFoundException {
       theLogger.info("getSpreads");
-      // Try getting all the data at this point.
-      readBuildTestReports();
-      populateMatrix();
 
+
+      // Try getting all the data at this point.
+      //readBuildTestReports();
+      //populateMatrix();
+/*
       // Filter out fail only
       for (TestCaseMatrix tcm : testCaseMatrix.values()) {
          if (tcm.hasFailed()) {
             matrix.put(tcm.getQName(), tcm);
          }
       }
+*/
+      buildNumbers = TestHistoryReporter.getBuildNumbers();
+      matrix = TestHistoryReporter.getTestFailingMatrixes();
 
       int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
       String[][] ss = new String[matrix.size()][diff+2]; // +2 since it is a range and we need the name
