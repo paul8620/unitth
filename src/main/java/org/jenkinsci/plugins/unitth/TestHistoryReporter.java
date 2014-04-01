@@ -115,13 +115,11 @@ public class TestHistoryReporter extends Publisher {
 
       // Build page PluginAction/summary.jelly
       // TODO: Configurable when setting up the job.
-      /*
-      PluginAction pa = new PluginAction(project);
-      pa.setBuildNumbers(buildNumbers);
-      pa.setTheMatrix(testCaseMatrix);
-      build.addAction(pa);
-      build.save();
-      */
+      if (true) {
+         PluginAction pa = new PluginAction(project);
+         build.addAction(pa);
+         build.save();
+      }
       return true;
    }
 
