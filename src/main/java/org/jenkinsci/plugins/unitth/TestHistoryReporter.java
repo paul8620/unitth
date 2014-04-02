@@ -21,8 +21,10 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -78,7 +80,7 @@ public class TestHistoryReporter extends Publisher {
 
    @Override
    public Collection<? extends Action> getProjectActions(final AbstractProject<?, ?> project) {
-      PluginAction pa = new PluginAction(project);
+      //PluginAction pa = new PluginAction(project);
       /*
       if (testCaseMatrix!=null) {
          pa.setBuildNumbers(buildNumbers);
@@ -87,7 +89,7 @@ public class TestHistoryReporter extends Publisher {
       }
       */
       Collection<PluginAction> collection = new ArrayList<PluginAction>();
-      collection.add(pa);
+      //collection.add(pa);
       return collection;
    }
 
@@ -105,8 +107,10 @@ public class TestHistoryReporter extends Publisher {
       project = build.getProject();
       readBuildTestReports();
       populateMatrix();
-      // TEMP
-      failureMatrixToConsole();
+
+      failureMatrixToConsole(); // TEMP
+      generateMatrix();
+      // publishReport();
 
       int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
       String[][] ss = new String[testCaseMatrix.size()][diff];
@@ -116,9 +120,9 @@ public class TestHistoryReporter extends Publisher {
       // Build page PluginAction/summary.jelly
       // TODO: Configurable when setting up the job.
       if (true) {
-         PluginAction pa = new PluginAction(project);
-         build.addAction(pa);
-         build.save();
+//         PluginAction pa = new PluginAction(project);
+//         build.addAction(pa);
+//         build.save();
       }
       return true;
    }
@@ -367,6 +371,95 @@ public class TestHistoryReporter extends Publisher {
       }
       return theMatrix;
    }
+
+   // Support
+   private final String LF = "\n";
+   private final String TAB = "\t";
+   private String t(int n) {
+      String s = "";
+      for (int i=0; i<n; i++) {
+         s+=TAB;
+      }
+      return s;
+   }
+
+   public void generateMatrix() throws IOException {
+      int i = 0;
+      // HTML string
+      StringBuffer sb = new StringBuffer();
+      sb.append("<html>"+LF);
+      sb.append("<head></head>"+LF);
+      sb.append("<body>"+LF);
+      sb.append("<tbody>"+LF);
+      sb.append(t(++i)+"<table>"+LF);
+      sb.append(t(++i)+"<tr>"+LF);
+      sb.append(t(++i)+"<th>ClassName.TestName</th><th>Runs</th><th>Passed</th><th>Failed</th><th>Ignored</th><th>Spread</th>"+LF);
+      sb.append(t(--i)+"</tr>"+LF);
+
+      for(TestCaseMatrix tcm : getTestFailingMatrixes().values()) {
+         sb.append(t(i)+"<tr>"+LF);
+         sb.append(t(++i)+"<td width=\"2*\">"+tcm.getQName()+"</td>");
+         sb.append("<td width=\"1*\">"+tcm.getNoRuns()+"</td>");
+         sb.append("<td width=\"1*\">"+tcm.getNoPassed()+"</td>");
+         sb.append("<td width=\"1*\">"+tcm.getNoPassed()+"</td>");
+         sb.append("<td width=\"1*\">"+tcm.getNoFailed()+"</td>");
+         sb.append("<td width=\"40*\">"+LF);
+         sb.append(t(++i) + "<table class=\"barGraph\" cellspacing=\"0\">" + LF);
+         sb.append(t(++i) + "<tbody>" + LF);
+         sb.append(t(++i) + "<tr>" + LF);
+         //generateSpreadBar(buf, tcs);
+         sb.append(t(i) + "</tr>" + LF);
+         sb.append(t(--i) + "</tbody>" + LF);
+         sb.append(t(--i) + "</table>" + LF);
+         sb.append(t(--i)+"</td>");
+         sb.append(t(--i)+"</tr>");
+      }
+      sb.append(t(--i)+"</table>"+LF);
+      sb.append("</tbody>"+LF);
+      sb.append("</body>"+LF);
+      sb.append("</html>"+LF);
+
+      // Write to file in the correct location
+      BufferedWriter out = new BufferedWriter(new FileWriter("test-matrix.html"));
+      out.write(sb.toString());
+      out.flush();
+      out.close();
+
+   }
+/*
+   protected void generateSpreadBar(BufferedWriter buf, TestCaseSummary tcs)
+      throws IOException {
+
+      String cssClass = "";
+      int noRuns = th.getNoRuns();
+      for (int i = 1; i <= noRuns; i++) {
+         TestCaseVerdict tcv = tcs.getSpreadAt(i);
+         if (null == tcv) {
+            cssClass = "norun";
+         } else if (TestCaseVerdict.e_PASS == tcv) {
+            cssClass = "pass";
+         } else if (TestCaseVerdict.e_FAIL == tcv) {
+            cssClass = "fail";
+         } else if (TestCaseVerdict.e_ERROR == tcv) {
+            cssClass = "error";
+         } else if (TestCaseVerdict.e_IGNORED == tcv) {
+            cssClass = "ignored";
+         }
+
+         buf.write(t(4));
+         buf.write(t(4));
+         buf.write("<TD class=\""
+            + cssClass
+            + "\" align=\"center\">"
+            + getHtmlReportLink(th.getTestRunByIdx(i),
+            "<img title=\"Run-" + i + "\" src=\"images/"
+               + UnitTH.TRANS_IMAGE
+               + "\" border=\"0\" width=\"" + SPREAD_WIDTH
+               + "\" height=\"" + SPREAD_HEIGHT + "\">")
+            + "</TD>" + c_LF);
+      }
+   }
+  */
 
    // R E M O V E 2 H E R E
 

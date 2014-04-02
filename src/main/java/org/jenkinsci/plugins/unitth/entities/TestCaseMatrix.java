@@ -56,4 +56,20 @@ public class TestCaseMatrix {
    public String getQName() {
       return className+"."+name;
    }
+
+   public int getNoRuns() {
+      return runs;
+   }
+
+   public int getNoPassed() {
+      return noPassed;
+   }
+
+   public int getNoFailed() {
+      return noFailed;
+   }
+
+   public int getNoSkipped() {
+      return noSkipped;
+   }
 }
