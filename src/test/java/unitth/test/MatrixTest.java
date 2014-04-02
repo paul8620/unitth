@@ -157,4 +157,9 @@ public class MatrixTest {
       }
 */
    }
+
+   @Test
+   public void htmlOut() throws Exception {
+      thr.generateMatrix();
+   }
 }

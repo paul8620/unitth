@@ -388,31 +388,38 @@ public class TestHistoryReporter extends Publisher {
       // HTML string
       StringBuffer sb = new StringBuffer();
       sb.append("<html>"+LF);
-      sb.append("<head></head>"+LF);
+      sb.append("<head>"+LF);
+      sb.append(theCss());
+      sb.append("</head>"+LF);
       sb.append("<body>"+LF);
       sb.append("<tbody>"+LF);
       sb.append(t(++i)+"<table>"+LF);
       sb.append(t(++i)+"<tr>"+LF);
-      sb.append(t(++i)+"<th>ClassName.TestName</th><th>Runs</th><th>Passed</th><th>Failed</th><th>Ignored</th><th>Spread</th>"+LF);
+      sb.append(t(++i)+"<th class=\"graphHeaderLeft\">ClassName.TestName</th>"
+         + "<th class=\"graphHeader\">Runs</th>"
+         + "<th class=\"graphHeader\">Passed</th>"
+         + "<th class=\"graphHeader\">Failed</th>"
+         + "<th class=\"graphHeader\">Skipped</th>"
+         + "<th class=\"graphHeader\" align=\"left\" colspan=\"2\">Spread</th>"+LF);
       sb.append(t(--i)+"</tr>"+LF);
 
       for(TestCaseMatrix tcm : getTestFailingMatrixes().values()) {
          sb.append(t(i)+"<tr>"+LF);
-         sb.append(t(++i)+"<td width=\"2*\">"+tcm.getQName()+"</td>");
-         sb.append("<td width=\"1*\">"+tcm.getNoRuns()+"</td>");
-         sb.append("<td width=\"1*\">"+tcm.getNoPassed()+"</td>");
-         sb.append("<td width=\"1*\">"+tcm.getNoPassed()+"</td>");
-         sb.append("<td width=\"1*\">"+tcm.getNoFailed()+"</td>");
-         sb.append("<td width=\"40*\">"+LF);
+         sb.append(t(++i)+"<td class=\"graphItemLeft\" align=\"left\" width=\"2*\">"+tcm.getQName()+"</td>");
+         sb.append("<td class=\"graphItem\" width=\"1*\">"+tcm.getNoRuns()+"</td>");
+         sb.append("<td class=\"graphItem\" width=\"1*\">"+tcm.getNoPassed()+"</td>");
+         sb.append("<td class=\"graphItem\" width=\"1*\">"+tcm.getNoFailed()+"</td>");
+         sb.append("<td class=\"graphItem\" width=\"1*\">"+tcm.getNoSkipped()+"</td>");
+         sb.append("<td class=\"graphItem\" width=\"40*\">"+LF);
          sb.append(t(++i) + "<table class=\"barGraph\" cellspacing=\"0\">" + LF);
          sb.append(t(++i) + "<tbody>" + LF);
          sb.append(t(++i) + "<tr>" + LF);
-         //generateSpreadBar(buf, tcs);
+         generateSpreadBar(sb, tcm);
          sb.append(t(i) + "</tr>" + LF);
          sb.append(t(--i) + "</tbody>" + LF);
          sb.append(t(--i) + "</table>" + LF);
-         sb.append(t(--i)+"</td>");
-         sb.append(t(--i)+"</tr>");
+         sb.append(t(--i)+"</td>"+LF);
+         sb.append(t(--i)+"</tr>"+LF);
       }
       sb.append(t(--i)+"</table>"+LF);
       sb.append("</tbody>"+LF);
@@ -420,46 +427,207 @@ public class TestHistoryReporter extends Publisher {
       sb.append("</html>"+LF);
 
       // Write to file in the correct location
-      BufferedWriter out = new BufferedWriter(new FileWriter("test-matrix.html"));
+      File f = new File("test-matrix.html");
+      f.createNewFile();
+      BufferedWriter out = new BufferedWriter(new FileWriter(f));
       out.write(sb.toString());
       out.flush();
       out.close();
-
    }
-/*
-   protected void generateSpreadBar(BufferedWriter buf, TestCaseSummary tcs)
-      throws IOException {
 
+   private void generateSpreadBar(StringBuffer sb, TestCaseMatrix tcm) {
       String cssClass = "";
-      int noRuns = th.getNoRuns();
-      for (int i = 1; i <= noRuns; i++) {
-         TestCaseVerdict tcv = tcs.getSpreadAt(i);
+      for (int buildNumber : buildNumbers) {
+         TestCaseVerdict tcv = tcm.getSpreadAt(buildNumber).getVerdict();
          if (null == tcv) {
             cssClass = "norun";
-         } else if (TestCaseVerdict.e_PASS == tcv) {
+         } else if (TestCaseVerdict.PASSED == tcv) {
             cssClass = "pass";
-         } else if (TestCaseVerdict.e_FAIL == tcv) {
+         } else if (TestCaseVerdict.FAILED == tcv) {
             cssClass = "fail";
-         } else if (TestCaseVerdict.e_ERROR == tcv) {
-            cssClass = "error";
-         } else if (TestCaseVerdict.e_IGNORED == tcv) {
+         } else if (TestCaseVerdict.SKIPPED == tcv) {
             cssClass = "ignored";
          }
 
-         buf.write(t(4));
-         buf.write(t(4));
-         buf.write("<TD class=\""
-            + cssClass
-            + "\" align=\"center\">"
-            + getHtmlReportLink(th.getTestRunByIdx(i),
-            "<img title=\"Run-" + i + "\" src=\"images/"
-               + UnitTH.TRANS_IMAGE
-               + "\" border=\"0\" width=\"" + SPREAD_WIDTH
-               + "\" height=\"" + SPREAD_HEIGHT + "\">")
-            + "</TD>" + c_LF);
+         sb.append(t(4));
+         sb.append("<td class=\""
+            +cssClass
+            +"\" align=\"center\">&nbsp;&nbsp;"
+            +"</td>"+LF);
       }
    }
-  */
+
+   /*
+TD.graphPercent {
+	BACKGROUND: #ffffff;
+	BORDER-BOTTOM: #dcdcdc 1px solid;
+	BORDER-RIGHT: #dcdcdc 1px solid;
+}
+
+TD.graphBarLeft {
+	BACKGROUND: #ffffff;
+	BORDER-BOTTOM: #dcdcdc 1px solid;
+	FONT-WEIGHT: bold;
+}
+
+TD.graphBar {
+	BACKGROUND: #ffffff;
+	BORDER-BOTTOM: #dcdcdc 1px solid;
+	BORDER-RIGHT: #dcdcdc 1px solid;
+	WIDTH: 50%;
+}
+
+TABLE.barGraph {
+	WIDTH: 100%;
+}
+
+TD.prpass {
+	FONT-SIZE: 2px;
+	BACKGROUND: #00df00;
+	BORDER-LEFT: #9c9c9c 1px solid;
+	BORDER-TOP: #9c9c9c 1px solid;
+	BORDER-BOTTOM: #9c9c9c 1px solid;
+}
+
+TD.prfail {
+	FONT-SIZE: 2px;
+	BACKGROUND: #df0000;
+	BORDER: #9c9c9c 1px solid;
+}
+
+TD.prNan {
+	FONT-SIZE: 2px;
+	BACKGROUND: #FFFF00;
+	BORDER: #9c9c9c 1px solid;
+}
+
+TD.pass {
+	FONT-SIZE: 2px;
+	BACKGROUND: #00df00;
+	BORDER-TOP: #4AA02C 1px solid;
+	BORDER-BOTTOM: #347235 1px solid;
+	BORDER-RIGHT: #347235 1px solid;
+	BORDER-LEFT: #4AA02C 1px solid;
+}
+TD.fail {
+	FONT-SIZE: 2px;
+	BACKGROUND: #df0000;
+	BORDER-TOP: #7E3117 1px solid;
+	BORDER-BOTTOM: #7E2217 1px solid;
+	BORDER-RIGHT: #7E2217 1px solid;
+	BORDER-LEFT: #7E3117 1px solid;
+}
+TD.ignored {
+	FONT-SIZE: 2px;
+	BACKGROUND: #FFFF00;
+	BORDER-TOP: #9c9c9c 1px solid;
+	BORDER-BOTTOM: #717D7D 1px solid;
+	BORDER-RIGHT: #717D7D 1px solid;
+	BORDER-LEFT: #9c9c9c 1px solid;
+}
+
+TD.norun {
+	FONT-SIZE: 2px;
+	BACKGROUND: #C2DFFF;
+	BORDER-TOP: #9c9c9c 1px solid;
+	BORDER-BOTTOM: #717D7D 1px solid;
+	BORDER-RIGHT: #717D7D 1px solid;
+	BORDER-LEFT: #9c9c9c 1px solid;
+}
+
+}
+    */
+
+   private String theCss() {
+      String s = "";
+      s+="<style type=\"text/css\">"
+         +"table {"
+         +"border: 0px solid;"
+         +"font-family:Verdana;"
+         +"font-size: 10px;"
+         +"border-spacing: 0px;"
+         +"}"
+         +"tr.graphHeaderLeft {"
+         +"background: #eff7ff;"
+         +"border: #dcdcdc 1px solid;"
+         +"padding: 4px 12px 1px 1px;"
+         +"text-align: left;"
+         +"}"
+         +"th.graphHeader {"
+         +"background: #eff7ff;"
+         +"border-bottom: #dcdcdc 1px solid;"
+         +"border-top: #dcdcdc 1px solid;"
+         +"border-right: #dcdcdc 1px solid;"
+         +"padding: 4px 12px 1px 1px;text-align: left;"
+         +"}"
+         +"th.graphHeaderLeft {"
+         +"background: #eff7ff;"
+         +"border: #dcdcdc 1px solid;"
+         +"padding: 4px 12px 1px 1px;"
+         +"text-align: left;"
+         +"}"
+         +"td.graphItemLeft {"
+         +"background: #ffffff;"
+         +"border-bottom: #dcdcdc 1px solid;"
+         +"border-left: #dcdcdc 1px solid;"
+         +"border-right: #dcdcdc 1px solid;"
+         +"padding-left: 15px;"
+         +"padding-right: 15px;"
+         +"font-weight: bold;"
+         +"font-size: 10px;"
+         +"}"
+         +"td.graphItem {"
+         +"background: #ffffff;"
+         +"border-bottom: #dcdcdc 1px solid;"
+         +"border-right: #dcdcdc 1px solid;"
+         +"padding-left: 15px;"
+         +"padding-right: 15px;"
+         +"font-weight: bold;"
+         +"font-size: 10px;"
+         +"}"
+         +"TD.pass {"
+         +"FONT-SIZE: 2px;"
+         +"BACKGROUND: #00df00;"
+         +"BORDER-TOP: #4AA02C 1px solid;"
+         +"BORDER-BOTTOM: #347235 1px solid;"
+         +"BORDER-RIGHT: #347235 1px solid;"
+         +"BORDER-LEFT: #4AA02C 1px solid;"
+         +"height:10px;"
+         +"width:6px;"
+         +"}"
+         +"TD.fail {"
+         +"FONT-SIZE: 2px;"
+         +"BACKGROUND: #df0000;"
+         +"BORDER-TOP: #7E3117 1px solid;"
+         +"BORDER-BOTTOM: #7E2217 1px solid;"
+         +"BORDER-RIGHT: #7E2217 1px solid;"
+         +"BORDER-LEFT: #7E3117 1px solid;"
+         +"height:10px;"
+         +"width:6px;"
+         +"}"
+         +"TD.ignored {"
+         +"FONT-SIZE: 2px;"
+         +"BACKGROUND: #FFFF00;"
+         +"BORDER-TOP: #9c9c9c 1px solid;"
+         +"BORDER-BOTTOM: #717D7D 1px solid;"
+         +"BORDER-RIGHT: #717D7D 1px solid;"
+         +"BORDER-LEFT: #9c9c9c 1px solid;"
+         +"height:10px;"
+         +"width:6px;"
+         +"}"
+         +"TD.norun {"
+         +"FONT-SIZE: 2px;"
+         +"BACKGROUND: #C2DFFF;"
+         +"BORDER-TOP: #9c9c9c 1px solid;"
+         +"BORDER-BOTTOM: #717D7D 1px solid;"
+         +"BORDER-RIGHT: #717D7D 1px solid;"
+         +"BORDER-LEFT: #9c9c9c 1px solid;"
+         +"height:10px;"
+         +"width:6px;"
+         +"}"
+         +"</style>";
+      return s;
+   }
 
    // R E M O V E 2 H E R E
 

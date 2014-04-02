@@ -46,6 +46,10 @@ public class TestCaseMatrix {
       return spread;
    }
 
+   public TestCase getSpreadAt(int i) {
+      return spread.get(i);
+   }
+
    public boolean hasFailed() {
       if (noFailed > 0) {
          return true;
