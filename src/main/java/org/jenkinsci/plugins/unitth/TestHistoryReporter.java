@@ -438,17 +438,19 @@ public class TestHistoryReporter extends Publisher {
    private void generateSpreadBar(StringBuffer sb, TestCaseMatrix tcm) {
       String cssClass = "";
       for (int buildNumber : buildNumbers) {
-         TestCaseVerdict tcv = tcm.getSpreadAt(buildNumber).getVerdict();
-         if (null == tcv) {
+         TestCase tc = tcm.getSpreadAt(buildNumber);
+         if (tc==null) {
             cssClass = "norun";
-         } else if (TestCaseVerdict.PASSED == tcv) {
-            cssClass = "pass";
-         } else if (TestCaseVerdict.FAILED == tcv) {
-            cssClass = "fail";
-         } else if (TestCaseVerdict.SKIPPED == tcv) {
-            cssClass = "ignored";
+         } else {
+            TestCaseVerdict tcv = tc.getVerdict();
+            if (TestCaseVerdict.PASSED == tcv) {
+               cssClass = "pass";
+            } else if (TestCaseVerdict.FAILED == tcv) {
+               cssClass = "fail";
+            } else if (TestCaseVerdict.SKIPPED == tcv) {
+               cssClass = "ignored";
+            }
          }
-
          sb.append(t(4));
          sb.append("<td class=\""
             +cssClass
