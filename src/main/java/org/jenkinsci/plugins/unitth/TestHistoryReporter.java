@@ -93,7 +93,11 @@ public class TestHistoryReporter extends Publisher {
       */
       Collection<Action> collection = new ArrayList<Action>();
       LinkAction la = new LinkAction(project.getBuildDir()+"/thx/test-matrix.html");
+      LinkAction la2 = new LinkAction("/thx/test-matrix.html");
+      LinkAction la3 = new LinkAction("thx/test-matrix.html");
       collection.add(la);
+      collection.add(la2);
+      collection.add(la3);
       return collection;
    }
 
