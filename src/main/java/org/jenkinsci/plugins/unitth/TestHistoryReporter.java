@@ -21,11 +21,14 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -388,7 +391,7 @@ public class TestHistoryReporter extends Publisher {
    }
 
    // Support
-   private final String LF = "\n";
+   private final String LF = System.getProperty("line.separator");
    private final String TAB = "\t";
    private String t(int n) {
       String s = "";
@@ -398,15 +401,17 @@ public class TestHistoryReporter extends Publisher {
       return s;
    }
 
-   public void generateMatrix(File rootDir) throws IOException {
+   public void generateMatrix(File rootDir) throws IOException, FileNotFoundException {
       int i = 0;
       // HTML string
       StringBuffer sb = new StringBuffer();
-      sb.append("<html>"+LF);
-      sb.append("<head>"+LF);
-      sb.append(theCss());
-      sb.append("</head>"+LF);
-      sb.append("<body>"+LF);
+      //sb.append("<html>"+LF);
+      //sb.append("<head>"+LF);
+      //sb.append(theCss());
+      //sb.append("</head>"+LF);
+      //sb.append("<body>"+LF);
+      sb.append("<li id=\"1\" class=\"unselected\" onclick=\"updateBody('1');\" value=\"" + rootDir + "/thx/test-matrix.html\">History matrix</li>"+LF);
+      sb.append("<br><br>"+LF);
       sb.append("<tbody>"+LF);
       sb.append(t(++i)+"<table>"+LF);
       sb.append(t(++i)+"<tr>"+LF);
@@ -438,19 +443,45 @@ public class TestHistoryReporter extends Publisher {
       }
       sb.append(t(--i)+"</table>"+LF);
       sb.append("</tbody>"+LF);
-      sb.append("</body>"+LF);
-      sb.append("</html>"+LF);
+      sb.append("</li>"+LF);
+      if (project!=null) {
+         sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").innerHTML=\"Back to " + project.getName() + "\";</script>");
+      }
+      //sb.append("</body>"+LF);
+      //sb.append("</html>"+LF);
 
       // Write to file in the correct location
       File folder = new File(rootDir, "thx");
       folder.mkdir();
       File f = new File(folder, "test-matrix.html");
       f.createNewFile();
+
       BufferedWriter out = new BufferedWriter(new FileWriter(f));
-      out.write(sb.toString());
-      out.flush();
+      try {
+         out.write(readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/testhistoryreporter/header.html")));
+         out.write(sb.toString());
+         out.write(readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/testhistoryreporter/footer.html")));
+         out.flush();
+      } catch (Exception e) {
+         e.printStackTrace();
+      } finally {
+         out.close();
+      }
       logger.println("[unitth] Wrote test history matrix to '"+f.getCanonicalFile()+"'");
-      out.close();
+   }
+
+   private String readFile(InputStream file) throws Exception {
+      BufferedReader reader = new BufferedReader(new InputStreamReader(file));
+      String         line = null;
+      StringBuffer  sb = new StringBuffer();
+      String         ls = System.getProperty("line.separator");
+
+      while( ( line = reader.readLine() ) != null ) {
+         sb.append(line);
+         sb.append(ls);
+      }
+
+      return sb.toString();
    }
 
    private void generateSpreadBar(StringBuffer sb, TestCaseMatrix tcm) {
@@ -469,7 +500,7 @@ public class TestHistoryReporter extends Publisher {
                cssClass = "ignored";
             }
          }
-         sb.append(t(4));
+         sb.append(t(7));
          sb.append("<td class=\""
             +cssClass
             +"\" align=\"center\">&nbsp;&nbsp;"
@@ -478,8 +509,21 @@ public class TestHistoryReporter extends Publisher {
    }
 
    private void publishReport() {
-
+      /*
+      ArrayList<String> headerLines;
+      ArrayList<String> footerLines;
+      try {
+         headerLines = readFile("/org/jenkinsci/plugins/unitth/TestHistoryReporter/header.html");
+         footerLines = readFile("/org/jenkinsci/plugins/unitth/TestHistoryReporter/footer.html");
+      } catch (FileNotFoundException e1) {
+         e1.printStackTrace();
+      } catch (IOException e1) {
+         e1.printStackTrace();
+      }
+      */
    }
+
+
    /*
 TD.graphPercent {
 	BACKGROUND: #ffffff;
