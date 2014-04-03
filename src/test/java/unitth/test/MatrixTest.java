@@ -160,6 +160,8 @@ public class MatrixTest {
 
    @Test
    public void htmlOut() throws Exception {
-      thr.generateMatrix(new File("."));
+      File f = new File("testreport");
+      f.mkdir();
+      thr.generateMatrix(f);
    }
 }

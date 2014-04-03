@@ -447,6 +447,7 @@ public class TestHistoryReporter extends Publisher {
       BufferedWriter out = new BufferedWriter(new FileWriter(f));
       out.write(sb.toString());
       out.flush();
+      logger.println("UnitTH: Wrote test history matrix to '"+f.getCanonicalFile()+"'");
       out.close();
    }
 
