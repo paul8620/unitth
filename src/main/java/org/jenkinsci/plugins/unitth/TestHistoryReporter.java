@@ -118,7 +118,7 @@ public class TestHistoryReporter extends Publisher {
       populateMatrix();
 
       failureMatrixToConsole(); // TEMP
-      generateMatrix(new File(Hudson.getInstance().getRootUrl()+project.getUrl()));
+      generateMatrix(new File(project.getUrl()));
       publishReport();
 
       //String hudsonUrl = Hudson.getInstance().getRootUrl();
