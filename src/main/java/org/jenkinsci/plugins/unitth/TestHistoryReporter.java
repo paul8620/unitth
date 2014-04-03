@@ -109,8 +109,8 @@ public class TestHistoryReporter extends Publisher {
       populateMatrix();
 
       failureMatrixToConsole(); // TEMP
-      generateMatrix(project.getRootDir());
-      // publishReport();
+      generateMatrix(project.getBuildDir());
+      publishReport();
 
       //String hudsonUrl = Hudson.getInstance().getRootUrl();
       //AbstractProject job = build.getProject();
@@ -195,7 +195,7 @@ public class TestHistoryReporter extends Publisher {
 
       @Override
       public String getDisplayName() {
-         return "Test history stats (UnitTH)";
+         return "Test history matrix (UnitTH)";
       }
 
       @Override
@@ -477,6 +477,9 @@ public class TestHistoryReporter extends Publisher {
       }
    }
 
+   private void publishReport() {
+
+   }
    /*
 TD.graphPercent {
 	BACKGROUND: #ffffff;
