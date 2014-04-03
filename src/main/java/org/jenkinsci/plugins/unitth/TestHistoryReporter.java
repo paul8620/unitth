@@ -463,6 +463,7 @@ public class TestHistoryReporter extends Publisher {
          out.write(readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/testhistoryreporter/footer.html")));
          out.flush();
       } catch (Exception e) {
+         logger.println("[unitth] Exception thrown when trying to write the report file.");
          e.printStackTrace();
       } finally {
          out.close();
@@ -472,15 +473,14 @@ public class TestHistoryReporter extends Publisher {
 
    private String readFile(InputStream file) throws Exception {
       BufferedReader reader = new BufferedReader(new InputStreamReader(file));
-      String         line = null;
-      StringBuffer  sb = new StringBuffer();
-      String         ls = System.getProperty("line.separator");
+      String line;
+      StringBuffer sb = new StringBuffer();
+      String ls = System.getProperty("line.separator");
 
       while( ( line = reader.readLine() ) != null ) {
          sb.append(line);
          sb.append(ls);
       }
-
       return sb.toString();
    }
 
