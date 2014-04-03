@@ -91,8 +91,9 @@ public class TestHistoryReporter extends Publisher {
          LOG_MESSAGE+="-> getProjectActions TCM.size: "+testCaseMatrix.size();
       }
       */
-      Collection<PluginAction> collection = new ArrayList<PluginAction>();
-      //collection.add(pa);
+      Collection<Action> collection = new ArrayList<Action>();
+      LinkAction la = new LinkAction(project.getBuildDir()+"/thx/test-matrix.html");
+      collection.add(la);
       return collection;
    }
 
@@ -457,9 +458,6 @@ public class TestHistoryReporter extends Publisher {
 
       BufferedWriter out = new BufferedWriter(new FileWriter(f));
       try {
-         if (this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/TestHistoryReporter/header.html")==null) {
-            logger.println("yes, null!!!!");
-         }
          out.write(readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/TestHistoryReporter/header.html")));
          out.write(sb.toString());
          out.write(readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/TestHistoryReporter/footer.html")));
