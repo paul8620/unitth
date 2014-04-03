@@ -459,8 +459,10 @@ public class TestHistoryReporter extends Publisher {
       BufferedWriter out = new BufferedWriter(new FileWriter(f));
       try {
          out.write(readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/testhistoryreporter/header.html")));
+         logger.println("header added");
          out.write(sb.toString());
          out.write(readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/testhistoryreporter/footer.html")));
+         logger.println("footer added");
          out.flush();
       } catch (Exception e) {
          logger.println("[unitth] Exception thrown when trying to write the report file.");
