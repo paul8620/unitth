@@ -94,7 +94,7 @@ public class TestHistoryReporter extends Publisher {
       */
       Collection<Action> collection = new ArrayList<Action>();
       LinkAction la = new LinkAction(project.getBuildDir()+"/thx/test-matrix.html");
-      LinkAction la2 = new LinkAction(Hudson.getInstance().getRootUrl()+project.getUrl()+"/thx/test-matrix.html");
+      LinkAction la2 = new LinkAction(Hudson.getInstance().getRootUrl()+project.getUrl()+"thx/test-matrix.html");
       LinkAction la3 = new LinkAction("thx/test-matrix.html");
       collection.add(la);
       collection.add(la2);
@@ -118,7 +118,7 @@ public class TestHistoryReporter extends Publisher {
       populateMatrix();
 
       failureMatrixToConsole(); // TEMP
-      generateMatrix(project.getBuildDir());
+      generateMatrix(new File(Hudson.getInstance().getRootUrl()+project.getUrl()));
       publishReport();
 
       //String hudsonUrl = Hudson.getInstance().getRootUrl();
