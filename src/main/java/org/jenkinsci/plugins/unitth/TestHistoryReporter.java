@@ -442,12 +442,14 @@ public class TestHistoryReporter extends Publisher {
       sb.append("</html>"+LF);
 
       // Write to file in the correct location
-      File f = new File(rootDir, "test-matrix.html");
+      File folder = new File(rootDir, "thx");
+      folder.mkdir();
+      File f = new File(folder, "test-matrix.html");
       f.createNewFile();
       BufferedWriter out = new BufferedWriter(new FileWriter(f));
       out.write(sb.toString());
       out.flush();
-      logger.println("UnitTH: Wrote test history matrix to '"+f.getCanonicalFile()+"'");
+      logger.println("[unitth] Wrote test history matrix to '"+f.getCanonicalFile()+"'");
       out.close();
    }
 
