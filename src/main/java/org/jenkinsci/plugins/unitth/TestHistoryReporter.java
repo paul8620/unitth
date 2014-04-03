@@ -109,8 +109,23 @@ public class TestHistoryReporter extends Publisher {
       populateMatrix();
 
       failureMatrixToConsole(); // TEMP
-      generateMatrix();
+      generateMatrix(project.getRootDir());
       // publishReport();
+
+      //String hudsonUrl = Hudson.getInstance().getRootUrl();
+      //AbstractProject job = build.getProject();
+      //reportLines.add("<script type=\"text/javascript\">test-matrix.html.innerHTML=\"Back to " + job.getName() + "\";</script>");
+      // If the URL isn't configured in Hudson, the best we can do is attempt to go Back.
+      //if (hudsonUrl == null) {
+      //   reportLines.add("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").onclick = function() { history.go(-1); return false; };
+      //</script>");
+      //} else {
+      //   String jobUrl = hudsonUrl + job.getUrl();
+      //   reportLines.add("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").href=\"" + jobUrl + "\";</script>");
+      //}
+      //reportLines.add("<script type=\"text/javascript\">document.getElementById(\"zip_link\").href=\"*zip*/" + reportTarget.getSanitizedName() + ".zip\";"
+      //   + "</script>");
+
 
       int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
       String[][] ss = new String[testCaseMatrix.size()][diff];
@@ -383,7 +398,7 @@ public class TestHistoryReporter extends Publisher {
       return s;
    }
 
-   public void generateMatrix() throws IOException {
+   public void generateMatrix(File rootDir) throws IOException {
       int i = 0;
       // HTML string
       StringBuffer sb = new StringBuffer();
@@ -427,7 +442,7 @@ public class TestHistoryReporter extends Publisher {
       sb.append("</html>"+LF);
 
       // Write to file in the correct location
-      File f = new File("test-matrix.html");
+      File f = new File(rootDir, "test-matrix.html");
       f.createNewFile();
       BufferedWriter out = new BufferedWriter(new FileWriter(f));
       out.write(sb.toString());
