@@ -93,15 +93,15 @@ public class TestHistoryReporter extends Publisher {
       }
       */
       Collection<Action> collection = new ArrayList<Action>();
-      LinkAction la = new LinkAction(project.getBuildDir()+"/thx/index.html");
-      LinkAction la2 = new LinkAction(Hudson.getInstance().getRootUrl()+project.getRootDir()+"/thx/index.html");
-      LinkAction la3 = new LinkAction("thx/index.html"); // <<<<======== DA ONE
-      //LinkAction la3 = new LinkAction("thx/test-matrix.html"); // <<<<======== DA ONE
-      LinkAction la4 = new LinkAction(Hudson.getInstance().getRootUrl()+project.getBuildDir()+"thx/index.html");
-      LinkAction la5 = new LinkAction(Hudson.getInstance().getRootUrl()+project.getUrl()+"thx/index.html");
-      LinkAction la6 = new LinkAction("thx");
-      LinkAction la7 = new LinkAction(project.getSomeWorkspace()+"thx");
-      LinkAction la8 = new LinkAction("file://Users/Shared/Jenkins/Home/jobs/unitth-matrix/thx/index.html");
+      LinkAction la = new LinkAction(project, project.getBuildDir()+"/thx/index.html");
+      LinkAction la2 = new LinkAction(project, Hudson.getInstance().getRootUrl()+project.getRootDir()+"/thx/index.html");
+      LinkAction la3 = new LinkAction(project, "thx/index.html"); // <<<<======== DA ONE
+      //LinkAction la3 = new LinkAction(project, "thx/test-matrix.html"); // <<<<======== DA ONE
+      LinkAction la4 = new LinkAction(project, Hudson.getInstance().getRootUrl()+project.getBuildDir()+"thx/index.html");
+      LinkAction la5 = new LinkAction(project, Hudson.getInstance().getRootUrl()+project.getUrl()+"thx/index.html");
+      LinkAction la6 = new LinkAction(project, "thx");
+      LinkAction la7 = new LinkAction(project, project.getSomeWorkspace()+"thx");
+      LinkAction la8 = new LinkAction(project, "file://Users/Shared/Jenkins/Home/jobs/unitth-matrix/thx/index.html");
       //collection.add(la);
       //collection.add(la2);
       //collection.add(la3);
