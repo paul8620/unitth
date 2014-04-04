@@ -90,9 +90,7 @@ public class TestHistoryReporter extends Publisher {
       for (AbstractBuild<?, ?> currentBuild : builds) {
          File f = new File(currentBuild.getRootDir()+"/junitResult.xml");
          // TODO, what about testng or custom?
-         logger.println("daFile: "+f.getAbsoluteFile());
          if (f.exists()) {
-            logger.println("parsing . . .");
             parseReport(f);
             buildReports.get(buildReports.size()-1).setBuildNumber(currentBuild.getNumber());
             buildNumbers.add(currentBuild.getNumber());
