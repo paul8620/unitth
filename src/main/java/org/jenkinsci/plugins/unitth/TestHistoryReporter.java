@@ -100,12 +100,15 @@ public class TestHistoryReporter extends Publisher {
       LinkAction la4 = new LinkAction(Hudson.getInstance().getRootUrl()+project.getBuildDir()+"thx/index.html");
       LinkAction la5 = new LinkAction(Hudson.getInstance().getRootUrl()+project.getUrl()+"thx/index.html");
       LinkAction la6 = new LinkAction("thx");
-      collection.add(la);
-      collection.add(la2);
-      collection.add(la3);
-      collection.add(la4);
-      collection.add(la5);
+      LinkAction la7 = new LinkAction(project.getSomeWorkspace()+"thx");
+      LinkAction la8 = new LinkAction("file://Users/Shared/Jenkins/Home/jobs/unitth-matrix/thx/index.html");
+      //collection.add(la);
+      //collection.add(la2);
+      //collection.add(la3);
+      //collection.add(la4);
+      //collection.add(la5);
       collection.add(la6);
+      collection.add(la7);
       return collection;
    }
 
