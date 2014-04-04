@@ -129,8 +129,8 @@ public class TestHistoryReporter extends Publisher {
       failureMatrixToConsole(); // TEMP
       logger.println("[unitth] Project URL... " + project.getUrl());
 
-      generateMatrix(project.getRootDir());
-      //generateMatrix(project.getBuildDir());
+      //generateMatrix(project.getRootDir());
+      generateMatrix(project.getBuildDir());
       //generateMatrix(new File(project.getSomeWorkspace().toURI()))
 
       int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
