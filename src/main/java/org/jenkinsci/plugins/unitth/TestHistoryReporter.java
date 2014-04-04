@@ -44,7 +44,7 @@ public class TestHistoryReporter extends Publisher {
    private PrintStream logger = null;
    private String name;
 
-   private ArrayList<TestReport> buildReports = new ArrayList<TestReport>();
+   private ArrayList<TestReport> buildReports;
    private TreeMap<String,TestCaseMatrix> testCaseMatrix = new TreeMap<String,TestCaseMatrix>();
    private TreeSet<Integer> buildNumbers = new TreeSet<Integer>();
 
@@ -55,6 +55,7 @@ public class TestHistoryReporter extends Publisher {
    @DataBoundConstructor
    public TestHistoryReporter(final String name) {
       this.name = name;
+      buildReports = new ArrayList<TestReport>();
    }
 
    @Override
@@ -72,7 +73,7 @@ public class TestHistoryReporter extends Publisher {
 
    @Override
    public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
-      throws InterruptedException, FileNotFoundException, IOException {
+      throws InterruptedException, IOException {
       logger = listener.getLogger();
       logger.println("[unitth] Calculating test matrix...");
       project = build.getProject();
