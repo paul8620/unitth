@@ -92,6 +92,9 @@ public class TestHistoryReporter extends Publisher {
          // TODO, what about testng or custom?
          if (f.exists()) {
             parseReport(f);
+            logger.println("sz: "+buildReports.size());
+            logger.println("number: "+currentBuild.getNumber());
+            logger.println("item: "+buildReports.contains(buildReports.size()-1));
             buildReports.get(buildReports.size()-1).setBuildNumber(currentBuild.getNumber());
             buildNumbers.add(currentBuild.getNumber());
          }
