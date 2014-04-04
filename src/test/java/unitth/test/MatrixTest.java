@@ -2,7 +2,6 @@ package unitth.test;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jenkinsci.plugins.unitth.PluginAction;
 import org.jenkinsci.plugins.unitth.TestHistoryReporter;
 import org.jenkinsci.plugins.unitth.entities.TestCase;
 import org.jenkinsci.plugins.unitth.entities.TestCaseMatrix;
@@ -129,33 +128,6 @@ public class MatrixTest {
    public void sortOutFailedTests() {
       ArrayList<TreeMap<Integer, TestCase>> spreads = thr.getTestCaseFailureOnlySpread();
       assertEquals("No unique tests that includes failures", 2, spreads.size());
-   }
-
-   @Test
-   public void sortOutFailedTestsInAction() throws Exception {
-      PluginAction pa = new PluginAction(null);
-      pa.setTheMatrix(tcmTree);
-
-      Field buildNumbers = thr.getClass().getDeclaredField("buildNumbers");
-      buildNumbers.setAccessible(true);
-      TreeSet<Integer> iii = new TreeSet<Integer>();
-      iii.add(1);
-      iii.add(2);
-      pa.setBuildNumbers(iii);
-
-      Field matrix = pa.getClass().getDeclaredField("matrix");
-      matrix.setAccessible(true);
-      assertEquals("No unique tests that includes failures", 2, ((TreeMap<String, TestCaseMatrix>) matrix.get(pa)).size());
-/*
-      String[][] ss = pa.getSpreads();
-      System.out.println("The matrix as in the Jenkins view.");
-      for (String[] sr : ss) {
-         for (String sc : sr) {
-            System.out.print(sc+" ");
-         }
-         System.out.print("\n");
-      }
-*/
    }
 
    @Test

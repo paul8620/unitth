@@ -41,12 +41,12 @@ import java.util.TreeSet;
 public class TestHistoryReporter extends Publisher {
 
    private AbstractProject project = null;
-   private static PrintStream logger = null; // Change to private
+   private PrintStream logger = null;
    private String name;
 
-   private static ArrayList<TestReport> buildReports = new ArrayList<TestReport>();
-   private static TreeMap<String,TestCaseMatrix> testCaseMatrix = new TreeMap<String,TestCaseMatrix>();
-   private static TreeSet<Integer> buildNumbers = new TreeSet<Integer>();
+   private ArrayList<TestReport> buildReports = new ArrayList<TestReport>();
+   private TreeMap<String,TestCaseMatrix> testCaseMatrix = new TreeMap<String,TestCaseMatrix>();
+   private TreeSet<Integer> buildNumbers = new TreeSet<Integer>();
 
    public BuildStepMonitor getRequiredMonitorService() {
       return BuildStepMonitor.NONE;
@@ -141,7 +141,7 @@ public class TestHistoryReporter extends Publisher {
       }
    }
 
-   public static class ReportHandler extends DefaultHandler {
+   public class ReportHandler extends DefaultHandler {
 
       private TestReport tr = null; // Created on document start
       private TestSuite testSuite = null; // Currently parsed test suite
@@ -245,7 +245,7 @@ public class TestHistoryReporter extends Publisher {
    //
    // GETTERS
    //
-   public static ArrayList<TreeMap<Integer, TestCase>> getTestCaseFailureOnlySpread() {
+   public ArrayList<TreeMap<Integer, TestCase>> getTestCaseFailureOnlySpread() {
       ArrayList<TreeMap<Integer, TestCase>> failsOnlySpread = new ArrayList<TreeMap<Integer, TestCase>>();
       for (TestCaseMatrix tcm : testCaseMatrix.values()) {
          if (tcm.hasFailed()) {
@@ -255,12 +255,7 @@ public class TestHistoryReporter extends Publisher {
       return failsOnlySpread;
    }
 
-   public static TreeSet<Integer> getBuildNumbers() {
-      logger.println("called getBuildNumbers");
-      return buildNumbers;
-   }
-
-   public static TreeMap<String,TestCaseMatrix> getTestFailingMatrixes() {
+   public TreeMap<String,TestCaseMatrix> getTestFailingMatrixes() {
       TreeMap<String,TestCaseMatrix> failsOnlySpread = new TreeMap<String,TestCaseMatrix>();
       for (TestCaseMatrix tcm : testCaseMatrix.values()) {
          if (tcm.hasFailed()) {
