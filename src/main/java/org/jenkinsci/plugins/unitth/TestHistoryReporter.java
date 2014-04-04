@@ -130,8 +130,8 @@ public class TestHistoryReporter extends Publisher {
       logger.println("[unitth] Project URL... " + project.getUrl());
 
       //generateMatrix(project.getRootDir());
-      generateMatrix(project.getBuildDir());
-      //generateMatrix(new File(project.getSomeWorkspace().toURI()))
+      //generateMatrix(project.getBuildDir());
+      generateMatrix(new File(project.getSomeWorkspace().toURI()));
 
       int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
       String[][] ss = new String[testCaseMatrix.size()][diff];
@@ -395,15 +395,9 @@ public class TestHistoryReporter extends Publisher {
       return s;
    }
 
-   public void generateMatrix(File rootDir) throws IOException, FileNotFoundException {
+   public void generateMatrix(File rootDir) throws IOException {
       int i = 0;
-      // HTML string
       StringBuffer sb = new StringBuffer();
-      //sb.append("<html>"+LF);
-      //sb.append("<head>"+LF);
-      //sb.append(theCss());
-      //sb.append("</head>"+LF);
-      //sb.append("<body>"+LF);
       sb.append("<li id=\"1\" class=\"unselected\" onclick=\"updateBody('1');\" value=\"" + rootDir + "/thx/test-matrix.html\">History matrix</li>"+LF);
       sb.append("<br><br>"+LF);
       sb.append("<tbody>"+LF);
@@ -441,14 +435,11 @@ public class TestHistoryReporter extends Publisher {
       if (project!=null) {
          sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").innerHTML=\"Back to " + project.getName() + "\";</script>");
       }
-      //sb.append("</body>"+LF);
-      //sb.append("</html>"+LF);
 
       // Write to file in the correct location
       logger.println("Location to write to: "+rootDir+"/thx");
       File folder = new File(rootDir, "thx");
       folder.mkdir();
-      //File f = new File(folder, "test-matrix.html");
       File f = new File(folder, "index.html");
       f.createNewFile();
 
@@ -503,180 +494,6 @@ public class TestHistoryReporter extends Publisher {
             +"</td>"+LF);
       }
    }
-
-   /*
-TD.graphPercent {
-	BACKGROUND: #ffffff;
-	BORDER-BOTTOM: #dcdcdc 1px solid;
-	BORDER-RIGHT: #dcdcdc 1px solid;
-}
-
-TD.graphBarLeft {
-	BACKGROUND: #ffffff;
-	BORDER-BOTTOM: #dcdcdc 1px solid;
-	FONT-WEIGHT: bold;
-}
-
-TD.graphBar {
-	BACKGROUND: #ffffff;
-	BORDER-BOTTOM: #dcdcdc 1px solid;
-	BORDER-RIGHT: #dcdcdc 1px solid;
-	WIDTH: 50%;
-}
-
-TABLE.barGraph {
-	WIDTH: 100%;
-}
-
-TD.prpass {
-	FONT-SIZE: 2px;
-	BACKGROUND: #00df00;
-	BORDER-LEFT: #9c9c9c 1px solid;
-	BORDER-TOP: #9c9c9c 1px solid;
-	BORDER-BOTTOM: #9c9c9c 1px solid;
-}
-
-TD.prfail {
-	FONT-SIZE: 2px;
-	BACKGROUND: #df0000;
-	BORDER: #9c9c9c 1px solid;
-}
-
-TD.prNan {
-	FONT-SIZE: 2px;
-	BACKGROUND: #FFFF00;
-	BORDER: #9c9c9c 1px solid;
-}
-
-TD.pass {
-	FONT-SIZE: 2px;
-	BACKGROUND: #00df00;
-	BORDER-TOP: #4AA02C 1px solid;
-	BORDER-BOTTOM: #347235 1px solid;
-	BORDER-RIGHT: #347235 1px solid;
-	BORDER-LEFT: #4AA02C 1px solid;
-}
-TD.fail {
-	FONT-SIZE: 2px;
-	BACKGROUND: #df0000;
-	BORDER-TOP: #7E3117 1px solid;
-	BORDER-BOTTOM: #7E2217 1px solid;
-	BORDER-RIGHT: #7E2217 1px solid;
-	BORDER-LEFT: #7E3117 1px solid;
-}
-TD.ignored {
-	FONT-SIZE: 2px;
-	BACKGROUND: #FFFF00;
-	BORDER-TOP: #9c9c9c 1px solid;
-	BORDER-BOTTOM: #717D7D 1px solid;
-	BORDER-RIGHT: #717D7D 1px solid;
-	BORDER-LEFT: #9c9c9c 1px solid;
-}
-
-TD.norun {
-	FONT-SIZE: 2px;
-	BACKGROUND: #C2DFFF;
-	BORDER-TOP: #9c9c9c 1px solid;
-	BORDER-BOTTOM: #717D7D 1px solid;
-	BORDER-RIGHT: #717D7D 1px solid;
-	BORDER-LEFT: #9c9c9c 1px solid;
-}
-
-}
-    */
-
-   private String theCss() {
-      String s = "";
-      s+="<style type=\"text/css\">"
-         +"table {"
-         +"border: 0px solid;"
-         +"font-family:Verdana;"
-         +"font-size: 10px;"
-         +"border-spacing: 0px;"
-         +"}"
-         +"tr.graphHeaderLeft {"
-         +"background: #eff7ff;"
-         +"border: #dcdcdc 1px solid;"
-         +"padding: 4px 12px 1px 1px;"
-         +"text-align: left;"
-         +"}"
-         +"th.graphHeader {"
-         +"background: #eff7ff;"
-         +"border-bottom: #dcdcdc 1px solid;"
-         +"border-top: #dcdcdc 1px solid;"
-         +"border-right: #dcdcdc 1px solid;"
-         +"padding: 4px 12px 1px 1px;text-align: left;"
-         +"}"
-         +"th.graphHeaderLeft {"
-         +"background: #eff7ff;"
-         +"border: #dcdcdc 1px solid;"
-         +"padding: 4px 12px 1px 1px;"
-         +"text-align: left;"
-         +"}"
-         +"td.graphItemLeft {"
-         +"background: #ffffff;"
-         +"border-bottom: #dcdcdc 1px solid;"
-         +"border-left: #dcdcdc 1px solid;"
-         +"border-right: #dcdcdc 1px solid;"
-         +"padding-left: 15px;"
-         +"padding-right: 15px;"
-         +"font-weight: bold;"
-         +"font-size: 10px;"
-         +"}"
-         +"td.graphItem {"
-         +"background: #ffffff;"
-         +"border-bottom: #dcdcdc 1px solid;"
-         +"border-right: #dcdcdc 1px solid;"
-         +"padding-left: 15px;"
-         +"padding-right: 15px;"
-         +"font-weight: bold;"
-         +"font-size: 10px;"
-         +"}"
-         +"TD.pass {"
-         +"FONT-SIZE: 2px;"
-         +"BACKGROUND: #00df00;"
-         +"BORDER-TOP: #4AA02C 1px solid;"
-         +"BORDER-BOTTOM: #347235 1px solid;"
-         +"BORDER-RIGHT: #347235 1px solid;"
-         +"BORDER-LEFT: #4AA02C 1px solid;"
-         +"height:10px;"
-         +"width:6px;"
-         +"}"
-         +"TD.fail {"
-         +"FONT-SIZE: 2px;"
-         +"BACKGROUND: #df0000;"
-         +"BORDER-TOP: #7E3117 1px solid;"
-         +"BORDER-BOTTOM: #7E2217 1px solid;"
-         +"BORDER-RIGHT: #7E2217 1px solid;"
-         +"BORDER-LEFT: #7E3117 1px solid;"
-         +"height:10px;"
-         +"width:6px;"
-         +"}"
-         +"TD.ignored {"
-         +"FONT-SIZE: 2px;"
-         +"BACKGROUND: #FFFF00;"
-         +"BORDER-TOP: #9c9c9c 1px solid;"
-         +"BORDER-BOTTOM: #717D7D 1px solid;"
-         +"BORDER-RIGHT: #717D7D 1px solid;"
-         +"BORDER-LEFT: #9c9c9c 1px solid;"
-         +"height:10px;"
-         +"width:6px;"
-         +"}"
-         +"TD.norun {"
-         +"FONT-SIZE: 2px;"
-         +"BACKGROUND: #C2DFFF;"
-         +"BORDER-TOP: #9c9c9c 1px solid;"
-         +"BORDER-BOTTOM: #717D7D 1px solid;"
-         +"BORDER-RIGHT: #717D7D 1px solid;"
-         +"BORDER-LEFT: #9c9c9c 1px solid;"
-         +"height:10px;"
-         +"width:6px;"
-         +"}"
-         +"</style>";
-      return s;
-   }
-
-   // R E M O V E 2 H E R E
 
    public String getName() {
       return name;
