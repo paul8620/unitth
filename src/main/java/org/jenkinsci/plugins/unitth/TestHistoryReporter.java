@@ -95,7 +95,8 @@ public class TestHistoryReporter extends Publisher {
       Collection<Action> collection = new ArrayList<Action>();
       LinkAction la = new LinkAction(project.getBuildDir()+"/thx/test-matrix.html");
       LinkAction la2 = new LinkAction(Hudson.getInstance().getRootUrl()+project.getRootDir()+"/thx/test-matrix.html");
-      LinkAction la3 = new LinkAction("thx/test-matrix.html"); // <<<<======== DA ONE
+      LinkAction la3 = new LinkAction("thx/index.html"); // <<<<======== DA ONE
+      //LinkAction la3 = new LinkAction("thx/test-matrix.html"); // <<<<======== DA ONE
       LinkAction la4 = new LinkAction(Hudson.getInstance().getRootUrl()+project.getBuildDir()+"thx/test-matrix.html");
       LinkAction la5 = new LinkAction(Hudson.getInstance().getRootUrl()+project.getUrl()+"thx/test-matrix.html");
       LinkAction la6 = new LinkAction(project.getUrl()+"thx/test-matrix.html");
@@ -126,8 +127,6 @@ public class TestHistoryReporter extends Publisher {
       failureMatrixToConsole(); // TEMP
       generateMatrix(project.getRootDir());
       generateMatrix(project.getBuildDir());
-      generateMatrix(new File(project.getUrl()));
-      publishReport();
 
       //String hudsonUrl = Hudson.getInstance().getRootUrl();
       //AbstractProject job = build.getProject();
@@ -466,7 +465,8 @@ public class TestHistoryReporter extends Publisher {
       // Write to file in the correct location
       File folder = new File(rootDir, "thx");
       folder.mkdir();
-      File f = new File(folder, "test-matrix.html");
+      //File f = new File(folder, "test-matrix.html");
+      File f = new File(folder, "index.html");
       f.createNewFile();
 
       BufferedWriter out = new BufferedWriter(new FileWriter(f));
@@ -520,22 +520,6 @@ public class TestHistoryReporter extends Publisher {
             +"</td>"+LF);
       }
    }
-
-   private void publishReport() {
-      /*
-      ArrayList<String> headerLines;
-      ArrayList<String> footerLines;
-      try {
-         headerLines = readFile("/org/jenkinsci/plugins/unitth/TestHistoryReporter/header.html");
-         footerLines = readFile("/org/jenkinsci/plugins/unitth/TestHistoryReporter/footer.html");
-      } catch (FileNotFoundException e1) {
-         e1.printStackTrace();
-      } catch (IOException e1) {
-         e1.printStackTrace();
-      }
-      */
-   }
-
 
    /*
 TD.graphPercent {
