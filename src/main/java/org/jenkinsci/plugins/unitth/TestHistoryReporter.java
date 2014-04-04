@@ -93,13 +93,13 @@ public class TestHistoryReporter extends Publisher {
       }
       */
       Collection<Action> collection = new ArrayList<Action>();
-      LinkAction la = new LinkAction(project.getBuildDir()+"/thx/test-matrix.html");
-      LinkAction la2 = new LinkAction(Hudson.getInstance().getRootUrl()+project.getRootDir()+"/thx/test-matrix.html");
+      LinkAction la = new LinkAction(project.getBuildDir()+"/thx/index.html");
+      LinkAction la2 = new LinkAction(Hudson.getInstance().getRootUrl()+project.getRootDir()+"/thx/index.html");
       LinkAction la3 = new LinkAction("thx/index.html"); // <<<<======== DA ONE
       //LinkAction la3 = new LinkAction("thx/test-matrix.html"); // <<<<======== DA ONE
-      LinkAction la4 = new LinkAction(Hudson.getInstance().getRootUrl()+project.getBuildDir()+"thx/test-matrix.html");
-      LinkAction la5 = new LinkAction(Hudson.getInstance().getRootUrl()+project.getUrl()+"thx/test-matrix.html");
-      LinkAction la6 = new LinkAction(project.getUrl()+"thx/test-matrix.html");
+      LinkAction la4 = new LinkAction(Hudson.getInstance().getRootUrl()+project.getBuildDir()+"thx/index.html");
+      LinkAction la5 = new LinkAction(Hudson.getInstance().getRootUrl()+project.getUrl()+"thx/index.html");
+      LinkAction la6 = new LinkAction(project.getUrl()+"thx/index.html");
       collection.add(la);
       collection.add(la2);
       collection.add(la3);
@@ -125,37 +125,14 @@ public class TestHistoryReporter extends Publisher {
       populateMatrix();
 
       failureMatrixToConsole(); // TEMP
-      generateMatrix(project.getRootDir());
+      generateMatrix(new File(project.getUrl()));
       generateMatrix(project.getBuildDir());
       generateMatrix(new File("."));
-
-      //String hudsonUrl = Hudson.getInstance().getRootUrl();
-      //AbstractProject job = build.getProject();
-      //reportLines.add("<script type=\"text/javascript\">test-matrix.html.innerHTML=\"Back to " + job.getName() + "\";</script>");
-      // If the URL isn't configured in Hudson, the best we can do is attempt to go Back.
-      //if (hudsonUrl == null) {
-      //   reportLines.add("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").onclick = function() { history.go(-1); return false; };
-      //</script>");
-      //} else {
-      //   String jobUrl = hudsonUrl + job.getUrl();
-      //   reportLines.add("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").href=\"" + jobUrl + "\";</script>");
-      //}
-      //reportLines.add("<script type=\"text/javascript\">document.getElementById(\"zip_link\").href=\"*zip*/" + reportTarget.getSanitizedName() + ".zip\";"
-      //   + "</script>");
-
 
       int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
       String[][] ss = new String[testCaseMatrix.size()][diff];
       logger.println("Rows: "+testCaseMatrix.size()+" Columns: "+diff+" (from "+buildNumbers.last()+"-"+buildNumbers.first()+" )");
       logger.println(LOG_MESSAGE);
-
-      // Build page PluginAction/summary.jelly
-      // TODO: Configurable when setting up the job.
-      if (true) {
-//         PluginAction pa = new PluginAction(project);
-//         build.addAction(pa);
-//         build.save();
-      }
       return true;
    }
 
