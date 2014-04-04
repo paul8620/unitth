@@ -37,24 +37,16 @@ import java.util.Stack;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-// Observed
-// Adding and removing the matrix as a post build step will trigger the rendering of the matrix on the job page
-
 // TODO, configurable: no runs back. 0-no-of-available
-// TODO, configurable, progress counter....
 public class TestHistoryReporter extends Publisher {
-//public class TestHistoryReporter extends Recorder {
 
    private AbstractProject project = null;
-   public static PrintStream logger = null; // Change to private
+   private static PrintStream logger = null; // Change to private
    private String name;
 
    private static ArrayList<TestReport> buildReports = new ArrayList<TestReport>();
    private static TreeMap<String,TestCaseMatrix> testCaseMatrix = new TreeMap<String,TestCaseMatrix>();
    private static TreeSet<Integer> buildNumbers = new TreeSet<Integer>();
-
-   // REMOVE
-   private static String LOG_MESSAGE = "UNSET";
 
    public BuildStepMonitor getRequiredMonitorService() {
       return BuildStepMonitor.NONE;
@@ -65,49 +57,11 @@ public class TestHistoryReporter extends Publisher {
       this.name = name;
    }
 
-   //
-   // THE MAGIC GLUE!!!! -> triggers the data to end up on the job main page...
-   //
-   /*
-   @Override
-   public Action getProjectAction(final AbstractProject<?, ?> project) {
-      PluginAction pa = new PluginAction(project);
-      if (testCaseMatrix!=null) {
-         pa.setBuildNumbers(buildNumbers);
-         pa.setTheMatrix(testCaseMatrix);
-         LOG_MESSAGE+="-> getProjectAction TCM.size: "+testCaseMatrix.size();
-      }
-      return pa;
-   }
-   */
-
    @Override
    public Collection<? extends Action> getProjectActions(final AbstractProject<?, ?> project) {
-      //PluginAction pa = new PluginAction(project);
-      /*
-      if (testCaseMatrix!=null) {
-         pa.setBuildNumbers(buildNumbers);
-         pa.setTheMatrix(testCaseMatrix);
-         LOG_MESSAGE+="-> getProjectActions TCM.size: "+testCaseMatrix.size();
-      }
-      */
       Collection<Action> collection = new ArrayList<Action>();
-      //LinkAction la = new LinkAction(project, project.getBuildDir()+"/thx/index.html");
-      //LinkAction la2 = new LinkAction(project, Hudson.getInstance().getRootUrl()+project.getRootDir()+"/thx/index.html");
-      //LinkAction la3 = new LinkAction(project, "thx/index.html"); // <<<<======== DA ONE
-      //LinkAction la3 = new LinkAction(project, "thx/test-matrix.html"); // <<<<======== DA ONE
-      //LinkAction la4 = new LinkAction(project, Hudson.getInstance().getRootUrl()+project.getBuildDir()+"thx/index.html");
-      //LinkAction la5 = new LinkAction(project, Hudson.getInstance().getRootUrl()+project.getUrl()+"thx/index.html");
-      LinkAction la6 = new LinkAction(project, "thx");
-      //LinkAction la7 = new LinkAction(project, project.getSomeWorkspace()+"thx");
-      //LinkAction la8 = new LinkAction(project, "file://Users/Shared/Jenkins/Home/jobs/unitth-matrix/thx/index.html");
-      //collection.add(la);
-      //collection.add(la2);
-      //collection.add(la3);
-      //collection.add(la4);
-      //collection.add(la5);
-      collection.add(la6);
-      //collection.add(la7);
+      LinkAction la = new LinkAction(project, "thx");
+      collection.add(la);
       return collection;
    }
 
@@ -121,33 +75,21 @@ public class TestHistoryReporter extends Publisher {
       throws InterruptedException, FileNotFoundException, IOException {
       logger = listener.getLogger();
       logger.println("[unitth] Calculating test matrix...");
-      LOG_MESSAGE+="-> perform ";
       project = build.getProject();
       readBuildTestReports();
       populateMatrix();
 
-      failureMatrixToConsole(); // TEMP
-      logger.println("[unitth] Project URL... " + project.getUrl());
+      // failureMatrixToConsole();
 
       generateMatrix(project.getRootDir());
-      //generateMatrix(project.getBuildDir());
-      //generateMatrix(new File(project.getSomeWorkspace().toURI()));
-
-      int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
-      String[][] ss = new String[testCaseMatrix.size()][diff];
-      logger.println("Rows: "+testCaseMatrix.size()+" Columns: "+diff+" (from "+buildNumbers.last()+"-"+buildNumbers.first()+" )");
-      logger.println(LOG_MESSAGE);
       return true;
    }
 
    private void readBuildTestReports() throws FileNotFoundException {
       final List<? extends AbstractBuild<?, ?>> builds = project.getBuilds();
       for (AbstractBuild<?, ?> currentBuild : builds) {
-         /* REMOVE */
-         logger.println("BUILD: "+currentBuild.getNumber()+" / "+currentBuild.getRootDir());
-         /* ALL THIS */
-         File f = new File(currentBuild.getRootDir()+"/junitResult.xml"); ///+"/build/"+currentBuild.getNumber()+"/junitResult.xml"); // FIXME,
-         // what about testng or custom?
+         File f = new File(currentBuild.getRootDir()+"/junitResult.xml");
+         // TODO, what about testng or custom?
          logger.println("daFile: "+f.getAbsoluteFile());
          if (f.exists()) {
             logger.println("parsing . . .");
@@ -173,11 +115,8 @@ public class TestHistoryReporter extends Publisher {
 
    private void populateMatrix() {
       for (TestReport tr : buildReports) {
-         //logger.println("BR:"+tr.getBuildNumber());
          for (TestSuite ts : tr.getTestSuites().values()) {
-            //logger.println("TS:"+ts.getName());
             for (TestCase tc : ts.getTestCases().values()) {
-               //logger.println("TC:"+tc.getName());
                if (!testCaseMatrix.containsKey(tc.getQualifiedName())) {
                   testCaseMatrix.put(tc.getQualifiedName(), new TestCaseMatrix(tc, tr.getBuildNumber()));
                } else {
@@ -201,7 +140,6 @@ public class TestHistoryReporter extends Publisher {
          return true;
       }
    }
-
 
    public static class ReportHandler extends DefaultHandler {
 
@@ -347,7 +285,6 @@ public class TestHistoryReporter extends Publisher {
          logger.print(spread.firstEntry().getValue().getQualifiedName() + " || ");
          for (int buildNumber : buildNumbers) {
             String str = "- ";
-            //logger.print("B"+buildNumber+ "-S"+spread.size()+" ");
             if (spread.get(buildNumber) == null) {
                str = ". ";
             }
@@ -358,30 +295,6 @@ public class TestHistoryReporter extends Publisher {
          }
          logger.print("\n");
       }
-   }
-
-   public String failureMatrix() {
-      String theMatrix = "";
-      for (int buildNumber : buildNumbers) {
-         theMatrix += buildNumber+" ";
-      }
-      theMatrix += "\n";
-      for (TreeMap<Integer, TestCase> spread : getTestCaseFailureOnlySpread()) {
-         theMatrix += spread.firstEntry().getValue().getQualifiedName() + " || ";
-         for (int buildNumber : buildNumbers) {
-            String str = "- ";
-            //logger.print("B"+buildNumber+ "-S"+spread.size()+" ");
-            if (spread.get(buildNumber) == null) {
-               str = ". ";
-            }
-            else if (spread.get(buildNumber).getVerdict()==TestCaseVerdict.FAILED) {
-               str = "x ";
-            }
-            theMatrix += str;
-         }
-         theMatrix += "\n";
-      }
-      return theMatrix;
    }
 
    // Support
