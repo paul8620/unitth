@@ -1,9 +1,9 @@
 package org.jenkinsci.plugins.unitth;
 
-import hudson.model.RootAction;
+import hudson.model.Action;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-public class LinkAction implements RootAction {
+public class LinkAction implements Action {
    private String url;
    private String text = "Test matrix";
    private String icon = "graph.gif";
