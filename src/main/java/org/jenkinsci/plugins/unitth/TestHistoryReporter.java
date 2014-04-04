@@ -129,7 +129,7 @@ public class TestHistoryReporter extends Publisher {
       //generateMatrix(new File(project.getUrl()));
       generateMatrix(project.getRootDir());
       generateMatrix(project.getBuildDir());
-      generateMatrix(new File("."));
+      //generateMatrix(new File("."));
 
       int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
       String[][] ss = new String[testCaseMatrix.size()][diff];
@@ -443,7 +443,7 @@ public class TestHistoryReporter extends Publisher {
       //sb.append("</html>"+LF);
 
       // Write to file in the correct location
-      logger.println("Location to write to: "+rootDir+"thx");
+      logger.println("Location to write to: "+rootDir+"/thx");
       File folder = new File(rootDir, "thx");
       folder.mkdir();
       //File f = new File(folder, "test-matrix.html");
