@@ -129,6 +129,7 @@ public class TestHistoryReporter extends Publisher {
       //generateMatrix(new File(project.getUrl()));
       generateMatrix(project.getRootDir());
       generateMatrix(project.getBuildDir());
+      generateMatrix(new File(project.getSomeWorkspace().toURI()));
       //generateMatrix(new File("."));
 
       int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
