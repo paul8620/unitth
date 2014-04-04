@@ -6,7 +6,6 @@ import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Action;
 import hudson.model.BuildListener;
-import hudson.model.Hudson;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Publisher;
@@ -93,22 +92,22 @@ public class TestHistoryReporter extends Publisher {
       }
       */
       Collection<Action> collection = new ArrayList<Action>();
-      LinkAction la = new LinkAction(project, project.getBuildDir()+"/thx/index.html");
-      LinkAction la2 = new LinkAction(project, Hudson.getInstance().getRootUrl()+project.getRootDir()+"/thx/index.html");
-      LinkAction la3 = new LinkAction(project, "thx/index.html"); // <<<<======== DA ONE
+      //LinkAction la = new LinkAction(project, project.getBuildDir()+"/thx/index.html");
+      //LinkAction la2 = new LinkAction(project, Hudson.getInstance().getRootUrl()+project.getRootDir()+"/thx/index.html");
+      //LinkAction la3 = new LinkAction(project, "thx/index.html"); // <<<<======== DA ONE
       //LinkAction la3 = new LinkAction(project, "thx/test-matrix.html"); // <<<<======== DA ONE
-      LinkAction la4 = new LinkAction(project, Hudson.getInstance().getRootUrl()+project.getBuildDir()+"thx/index.html");
-      LinkAction la5 = new LinkAction(project, Hudson.getInstance().getRootUrl()+project.getUrl()+"thx/index.html");
+      //LinkAction la4 = new LinkAction(project, Hudson.getInstance().getRootUrl()+project.getBuildDir()+"thx/index.html");
+      //LinkAction la5 = new LinkAction(project, Hudson.getInstance().getRootUrl()+project.getUrl()+"thx/index.html");
       LinkAction la6 = new LinkAction(project, "thx");
-      LinkAction la7 = new LinkAction(project, project.getSomeWorkspace()+"thx");
-      LinkAction la8 = new LinkAction(project, "file://Users/Shared/Jenkins/Home/jobs/unitth-matrix/thx/index.html");
+      //LinkAction la7 = new LinkAction(project, project.getSomeWorkspace()+"thx");
+      //LinkAction la8 = new LinkAction(project, "file://Users/Shared/Jenkins/Home/jobs/unitth-matrix/thx/index.html");
       //collection.add(la);
       //collection.add(la2);
       //collection.add(la3);
       //collection.add(la4);
       //collection.add(la5);
       collection.add(la6);
-      collection.add(la7);
+      //collection.add(la7);
       return collection;
    }
 
@@ -128,12 +127,11 @@ public class TestHistoryReporter extends Publisher {
       populateMatrix();
 
       failureMatrixToConsole(); // TEMP
-      logger.println("[unitth] Project URL... "+project.getUrl());
-      //generateMatrix(new File(project.getUrl()));
+      logger.println("[unitth] Project URL... " + project.getUrl());
+
       generateMatrix(project.getRootDir());
-      generateMatrix(project.getBuildDir());
-      generateMatrix(new File(project.getSomeWorkspace().toURI()));
-      //generateMatrix(new File("."));
+      //generateMatrix(project.getBuildDir());
+      //generateMatrix(new File(project.getSomeWorkspace().toURI()))
 
       int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
       String[][] ss = new String[testCaseMatrix.size()][diff];
