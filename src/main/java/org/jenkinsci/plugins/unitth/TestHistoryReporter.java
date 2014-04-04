@@ -55,7 +55,6 @@ public class TestHistoryReporter extends Publisher {
    @DataBoundConstructor
    public TestHistoryReporter(final String name) {
       this.name = name;
-      buildReports = new ArrayList<TestReport>();
    }
 
    @Override
@@ -74,6 +73,7 @@ public class TestHistoryReporter extends Publisher {
    @Override
    public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
       throws InterruptedException, IOException {
+      buildReports = new ArrayList<TestReport>();
       logger = listener.getLogger();
       logger.println("[unitth] Calculating test matrix...");
       project = build.getProject();
