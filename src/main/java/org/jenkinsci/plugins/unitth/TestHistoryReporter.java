@@ -99,7 +99,7 @@ public class TestHistoryReporter extends Publisher {
       //LinkAction la3 = new LinkAction("thx/test-matrix.html"); // <<<<======== DA ONE
       LinkAction la4 = new LinkAction(Hudson.getInstance().getRootUrl()+project.getBuildDir()+"thx/index.html");
       LinkAction la5 = new LinkAction(Hudson.getInstance().getRootUrl()+project.getUrl()+"thx/index.html");
-      LinkAction la6 = new LinkAction(project.getUrl()+"thx/index.html");
+      LinkAction la6 = new LinkAction("thx");
       collection.add(la);
       collection.add(la2);
       collection.add(la3);
