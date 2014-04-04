@@ -101,7 +101,6 @@ public class PluginAction implements ProminentProjectAction,
       int diff = buildNumbers.last()-buildNumbers.first(); // To be able to find spread size
       String[][] ss = new String[matrix.size()][diff+2]; // +2 since it is a range and we need the name
       int row = 0;
-      TestHistoryReporter.logger.println("GetSpreads.size:"+matrix.size());
       for (TestCaseMatrix tcm : matrix.values()) {
          ss[row][0] = tcm.getQName();
          int column = 1;
