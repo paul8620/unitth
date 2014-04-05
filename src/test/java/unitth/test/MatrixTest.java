@@ -8,6 +8,7 @@ import org.jenkinsci.plugins.unitth.entities.TestCaseMatrix;
 import org.jenkinsci.plugins.unitth.entities.TestCaseVerdict;
 import org.jenkinsci.plugins.unitth.entities.TestReport;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -130,7 +131,7 @@ public class MatrixTest {
       assertEquals("No unique tests that includes failures", 2, spreads.size());
    }
 
-   @Test
+   @Ignore
    public void htmlOut() throws Exception {
       File f = new File("testreport");
       f.mkdir();

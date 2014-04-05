@@ -108,7 +108,7 @@ public class TestHistoryReporter extends Publisher {
          ReportHandler handler = new ReportHandler();
          parser.parse(f, handler);
       } catch (Exception e) {
-         logger.println("Parsing exception: "+e.getMessage());
+         logger.println("[unitth] Parsing exception: "+e.getMessage());
          e.printStackTrace();
       }
    }
@@ -200,10 +200,10 @@ public class TestHistoryReporter extends Publisher {
          }
          else if (qName.equals(DURATION)) {
             String top = (String)this.elementStack.pop();
-            if (((String)this.elementStack.peek()).equals(SUITE)) {
+            if (this.elementStack.peek().equals(SUITE)) {
                testSuite.setDuration(new String(ch, start, length));
             }
-            else if (((String)this.elementStack.peek()).equals(CASE)) {
+            else if (this.elementStack.peek().equals(CASE)) {
                testCase.setDuration(new String(ch, start, length));
             }
             else {
@@ -348,10 +348,7 @@ public class TestHistoryReporter extends Publisher {
          sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").href=\"" + jobUrl + "\";</script>");
       }
 
-
-
       // Write to file in the correct location
-      logger.println("Location to write to: "+rootDir+"/thx");
       File folder = new File(rootDir, "thx");
       folder.mkdir();
       File f = new File(folder, "index.html");
