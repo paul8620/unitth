@@ -6,6 +6,7 @@ import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Action;
 import hudson.model.BuildListener;
+import hudson.model.Hudson;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Publisher;
@@ -93,11 +94,6 @@ public class TestHistoryReporter extends Publisher {
          File f = new File(currentBuild.getRootDir()+"/junitResult.xml");
          // TODO, what about testng or custom?
          if (f.exists()) {
-            parseReport(f);
-            logger.println("br: "+buildReports);
-            logger.println("sz: " + buildReports.size());
-            logger.println("number: "+currentBuild.getNumber());
-            logger.println("item: "+buildReports.contains(buildReports.size()-1));
             buildReports.get(buildReports.size()-1).setBuildNumber(currentBuild.getNumber()); // Get the last one and set the build number.
             buildNumbers.add(currentBuild.getNumber());
          }
@@ -233,9 +229,7 @@ public class TestHistoryReporter extends Publisher {
 
       @Override
       public void endDocument() throws SAXException {
-         logger.println("BEF: "+buildReports.size());
          buildReports.add(tr);
-         logger.println("AFTER: "+buildReports.size());
       }
 
       @Override
@@ -308,7 +302,7 @@ public class TestHistoryReporter extends Publisher {
    public void generateMatrix(File rootDir) throws IOException {
       int i = 0;
       StringBuffer sb = new StringBuffer();
-      sb.append("<li id=\"1\" class=\"unselected\" onclick=\"updateBody('1');\" value=\"" + rootDir + "/thx/test-matrix.html\">History matrix</li>"+LF);
+      //sb.append("<li id=\"1\" class=\"unselected\" onclick=\"updateBody('1');\" value=\"" + rootDir + "/thx/test-matrix.html\">History matrix</li>"+LF);
       sb.append("<br><br>"+LF);
       sb.append("<tbody>"+LF);
       sb.append(t(++i)+"<table>"+LF);
@@ -342,9 +336,19 @@ public class TestHistoryReporter extends Publisher {
       sb.append(t(--i)+"</table>"+LF);
       sb.append("</tbody>"+LF);
       sb.append("</li>"+LF);
+
+      String hudsonUrl = Hudson.getInstance().getRootUrl();
       if (project!=null) {
          sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").innerHTML=\"Back to " + project.getName() + "\";</script>");
       }
+      if (hudsonUrl == null) {
+         sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").onclick = function() { history.go(-1); return false; };"            + "</script>");
+      } else {
+         String jobUrl = hudsonUrl + project.getUrl();
+         sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").href=\"" + jobUrl + "\";</script>");
+      }
+
+
 
       // Write to file in the correct location
       logger.println("Location to write to: "+rootDir+"/thx");
