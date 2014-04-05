@@ -95,10 +95,10 @@ public class TestHistoryReporter extends Publisher {
          if (f.exists()) {
             parseReport(f);
             logger.println("br: "+buildReports);
-            logger.println("sz: "+buildReports.size());
+            logger.println("sz: " + buildReports.size());
             logger.println("number: "+currentBuild.getNumber());
             logger.println("item: "+buildReports.contains(buildReports.size()-1));
-            buildReports.get(buildReports.size()-1).setBuildNumber(currentBuild.getNumber());
+            buildReports.get(buildReports.size()-1).setBuildNumber(currentBuild.getNumber()); // Get the last one and set the build number.
             buildNumbers.add(currentBuild.getNumber());
          }
       }
@@ -152,15 +152,11 @@ public class TestHistoryReporter extends Publisher {
       private TestCase testCase = null; // Currently parsed test case
 
       private Stack elementStack = new Stack();
-      private StringBuilder buffer = new StringBuilder();
 
-      private final String RESULT = "result";
-      private final String SUITES = "suites";
       private final String SUITE = "suite";
       private final String FILE = "file";
       private final String NAME = "name";
       private final String DURATION = "duration"; // SUITE, CASE, ALL levels
-      private final String CASES = "cases";
       private final String CASE = "case";
       private final String CLASS_NAME = "className";
       private final String TEST_NAME = "testName";
@@ -237,7 +233,9 @@ public class TestHistoryReporter extends Publisher {
 
       @Override
       public void endDocument() throws SAXException {
+         logger.println("BEF: "+buildReports.size());
          buildReports.add(tr);
+         logger.println("AFTER: "+buildReports.size());
       }
 
       @Override
