@@ -407,7 +407,7 @@ public class TestHistoryReporter extends Publisher {
             logger.println("Build link: "+link);
             sb.append("<td class=\""
                +cssClass
-               +"\" align=\"center\"><a href=\""+link+"\"&nbsp;&nbsp;</a>"
+               +"\" align=\"center\"><a href=\""+link+"\">&nbsp;&nbsp;</a>"
                +"</td>"+LF);
          } else {
             sb.append("<td class=\""
