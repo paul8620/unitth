@@ -6,7 +6,6 @@ import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Action;
 import hudson.model.BuildListener;
-import hudson.model.Hudson;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Publisher;
@@ -337,16 +336,16 @@ public class TestHistoryReporter extends Publisher {
       sb.append("</tbody>"+LF);
       sb.append("</li>"+LF);
 
-      String hudsonUrl = Hudson.getInstance().getRootUrl();
+      //String hudsonUrl = Hudson.getInstance().getRootUrl();
       if (project!=null) {
          sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").innerHTML=\"Back to " + project.getName() + "\";</script>");
       }
-      if (hudsonUrl == null) {
+      /*if (hudsonUrl == null) {
          sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").onclick = function() { history.go(-1); return false; };"            + "</script>");
       } else {
          String jobUrl = hudsonUrl + project.getUrl();
          sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").href=\"" + jobUrl + "\";</script>");
-      }
+      }*/
 
       // Write to file in the correct location
       File folder = new File(rootDir, "thx");
