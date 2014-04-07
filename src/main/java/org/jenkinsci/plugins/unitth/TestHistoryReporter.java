@@ -93,6 +93,7 @@ public class TestHistoryReporter extends Publisher {
          File f = new File(currentBuild.getRootDir()+"/junitResult.xml");
          // TODO, what about testng or custom?
          if (f.exists()) {
+            parseReport(f);
             buildReports.get(buildReports.size()-1).setBuildNumber(currentBuild.getNumber()); // Get the last one and set the build number.
             buildNumbers.add(currentBuild.getNumber());
          }
