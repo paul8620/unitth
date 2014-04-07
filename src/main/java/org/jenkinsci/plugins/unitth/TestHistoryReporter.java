@@ -303,7 +303,6 @@ public class TestHistoryReporter extends Publisher {
    public void generateMatrix(File rootDir) throws IOException {
       int i = 0;
       StringBuffer sb = new StringBuffer();
-      //sb.append("<li id=\"1\" class=\"unselected\" onclick=\"updateBody('1');\" value=\"" + rootDir + "/thx/test-matrix.html\">History matrix</li>"+LF);
       String hudsonUrl = Hudson.getInstance().getRootUrl();
       String jobUrl = hudsonUrl + project.getUrl();
       sb.append("<h3><a href=\""+jobUrl+"\">Back to "+project.getName()+"</a></h3>");
@@ -341,7 +340,6 @@ public class TestHistoryReporter extends Publisher {
       }
       sb.append(t(--i)+"</tbody>"+LF);
       sb.append("</table>"+LF);
-      //sb.append("</li>"+LF);
 
       // Write to file in the correct location
       File folder = new File(rootDir, "thx");
@@ -352,19 +350,6 @@ public class TestHistoryReporter extends Publisher {
       BufferedWriter out = new BufferedWriter(new FileWriter(f));
       try {
          out.write(readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/TestHistoryReporter/header.html")));
-
-         //String hudsonUrl = Hudson.getInstance().getRootUrl();
-         //if (project!=null) {
-         //   sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").innerHTML=\"Back to " + project.getName() + "\";</script>");
-         //}
-         /*
-         if (hudsonUrl == null) {
-            sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").onclick = function() { history.go(-1); return false; };</script>");
-         } else {
-            String jobUrl = hudsonUrl + project.getUrl();
-            sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").href=\"" + jobUrl + "\";</script>");
-         }*/
-
          out.write(sb.toString());
          out.write(readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/TestHistoryReporter/footer.html")));
          out.flush();
