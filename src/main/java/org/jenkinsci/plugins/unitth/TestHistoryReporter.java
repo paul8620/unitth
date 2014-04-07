@@ -123,12 +123,6 @@ public class TestHistoryReporter extends Publisher {
       for (TestReport tr : buildReports) {
          for (TestSuite ts : tr.getTestSuites().values()) {
             for (TestCase tc : ts.getTestCases().values()) {
-               if (testCaseMatrix == null) {
-                  logger.println("UNITTH: testCaseMatrix is null.");
-               }
-               if (tc == null) {
-                  logger.println("UNITTH: tc is null.");
-               }
                if (!testCaseMatrix.containsKey(tc.getQualifiedName())) {
                   testCaseMatrix.put(tc.getQualifiedName(), new TestCaseMatrix(tc, tr.getBuildNumber()));
                } else {
@@ -279,33 +273,6 @@ public class TestHistoryReporter extends Publisher {
       return failsOnlySpread;
    }
 
-   // R E M O V E
-
-   //
-   // PRINTERS
-   //
-   public void failureMatrixToConsole() {
-      logger.print("Class.testName || ");
-      for (int buildNumber : buildNumbers) {
-         logger.print(buildNumber+" ");
-      }
-      logger.print("\n");
-      for (TreeMap<Integer, TestCase> spread : getTestCaseFailureOnlySpread()) {
-         logger.print(spread.firstEntry().getValue().getQualifiedName() + " || ");
-         for (int buildNumber : buildNumbers) {
-            String str = "- ";
-            if (spread.get(buildNumber) == null) {
-               str = ". ";
-            }
-            else if (spread.get(buildNumber).getVerdict()==TestCaseVerdict.FAILED) {
-               str = "x ";
-            }
-            logger.print(str);
-         }
-         logger.print("\n");
-      }
-   }
-
    // Support
    private final String LF = System.getProperty("line.separator");
    private final String TAB = "\t";
@@ -429,7 +396,6 @@ public class TestHistoryReporter extends Publisher {
             String link = Hudson.getInstance().getRootUrl()+project.getUrl()+buildNumber+"/testReport/"+tc.getPackageName()+"/"+tc.getClassName()+"/"+tc
                .getName().replace('.', '_')+"/";
 
-            logger.println("Build link: "+link);
             sb.append("<td class=\""
                +cssClass
                +"\" align=\"center\"><a href=\""+link+"\"><img src=\"pixel.png\" alt=\"buildNumber\" height=\"8\" width=\"4\"/></a>"

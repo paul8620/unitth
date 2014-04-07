@@ -64,8 +64,6 @@ public class MatrixTest {
       for (TestCaseMatrix tcm : tcmTree.values()) {
          System.out.println("spread.size "+tcm.getSpread().size());
       }
-
-      thr.failureMatrixToConsole();
    }
 
    @Test
