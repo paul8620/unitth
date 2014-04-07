@@ -120,6 +120,12 @@ public class TestHistoryReporter extends Publisher {
       for (TestReport tr : buildReports) {
          for (TestSuite ts : tr.getTestSuites().values()) {
             for (TestCase tc : ts.getTestCases().values()) {
+               if (testCaseMatrix == null) {
+                  logger.println("UNITTH: testCaseMatrix is null.");
+               }
+               if (tc == null) {
+                  logger.println("UNITTH: tc is null.");
+               }
                if (!testCaseMatrix.containsKey(tc.getQualifiedName())) {
                   testCaseMatrix.put(tc.getQualifiedName(), new TestCaseMatrix(tc, tr.getBuildNumber()));
                } else {
