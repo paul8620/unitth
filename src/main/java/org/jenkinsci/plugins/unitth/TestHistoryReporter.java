@@ -399,16 +399,22 @@ public class TestHistoryReporter extends Publisher {
          }
          sb.append(t(7));
 
-         // Link to job/test/report
-         // http://localhost:8080/job/unitth-matrix/91/testReport/unitth.dummytests.pack1/RandomPassFail1Test/test7/
-         String link = Hudson.getInstance().getRootUrl()+project.getUrl()+buildNumber+"/testReport/"+tc.getPackageName()+"/"+tc.getClassName()+"/"+tc
-            .getName().replace('.', '_')+"/";
+         if (tc==null) {
+            sb.append("<td class=\""
+               +cssClass
+               +"\" align=\"center\">&nbsp;&nbsp;</td>"+LF);
+         } else {
+            // Link to job/test/report
+            // http://localhost:8080/job/unitth-matrix/91/testReport/unitth.dummytests.pack1/RandomPassFail1Test/test7/
+            String link = Hudson.getInstance().getRootUrl()+project.getUrl()+buildNumber+"/testReport/"+tc.getPackageName()+"/"+tc.getClassName()+"/"+tc
+               .getName().replace('.', '_')+"/";
 
-         logger.println("Build link: "+link);
-         sb.append("<td class=\""
-            +cssClass
-            +"\" align=\"center\"><a href=\""+link+"\"&nbsp;&nbsp;</a>"
-            +"</td>"+LF);
+            logger.println("Build link: "+link);
+            sb.append("<td class=\""
+               +cssClass
+               +"\" align=\"center\"><a href=\""+link+"\"&nbsp;&nbsp;</a>"
+               +"</td>"+LF);
+         }
       }
    }
 
