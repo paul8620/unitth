@@ -75,6 +75,7 @@ public class TestHistoryReporter extends Publisher {
    public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
       throws InterruptedException, IOException {
       buildReports = new ArrayList<TestReport>();
+      buildNumbers = new TreeSet<Integer>();
       logger = listener.getLogger();
       logger.println("[unitth] Calculating test matrix...");
       project = build.getProject();
@@ -85,6 +86,7 @@ public class TestHistoryReporter extends Publisher {
 
       generateMatrix(project.getRootDir());
       buildReports = null;
+      buildNumbers = null;
       return true;
    }
 
