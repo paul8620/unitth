@@ -337,17 +337,6 @@ public class TestHistoryReporter extends Publisher {
       sb.append("</tbody>"+LF);
       sb.append("</li>"+LF);
 
-      //String hudsonUrl = Hudson.getInstance().getRootUrl();
-      if (project!=null) {
-         sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").innerHTML=\"Back to " + project.getName() + "\";</script>");
-      }
-      /*if (hudsonUrl == null) {
-         sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").onclick = function() { history.go(-1); return false; };"            + "</script>");
-      } else {
-         String jobUrl = hudsonUrl + project.getUrl();
-         sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").href=\"" + jobUrl + "\";</script>");
-      }*/
-
       // Write to file in the correct location
       File folder = new File(rootDir, "thx");
       folder.mkdir();
@@ -357,6 +346,18 @@ public class TestHistoryReporter extends Publisher {
       BufferedWriter out = new BufferedWriter(new FileWriter(f));
       try {
          out.write(readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/TestHistoryReporter/header.html")));
+
+         //String hudsonUrl = Hudson.getInstance().getRootUrl();
+         if (project!=null) {
+            sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").innerHTML=\"Back to " + project.getName() + "\";</script>");
+         }/*
+         if (hudsonUrl == null) {
+            sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").onclick = function() { history.go(-1); return false; };</script>");
+         } else {
+            String jobUrl = hudsonUrl + project.getUrl();
+            sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").href=\"" + jobUrl + "\";</script>");
+         }*/
+
          out.write(sb.toString());
          out.write(readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/TestHistoryReporter/footer.html")));
          out.flush();
