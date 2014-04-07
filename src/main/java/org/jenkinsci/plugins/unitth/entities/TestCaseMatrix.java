@@ -5,6 +5,7 @@ import java.util.TreeMap;
 public class TestCaseMatrix {
    private String name = null;
    private String className = null;
+   private String packageName = null;
    private TreeMap<Integer, TestCase> spread = null;
 
    private int runs = 0;
@@ -16,6 +17,7 @@ public class TestCaseMatrix {
    public TestCaseMatrix(TestCase tc, int i) {
       name = tc.getName();
       className = tc.getClassName();
+      packageName = tc.getPackageName();
       runs = 1;
       if (tc.getVerdict() == TestCaseVerdict.PASSED) {
          noPassed = 1;
@@ -58,7 +60,7 @@ public class TestCaseMatrix {
    }
 
    public String getQName() {
-      return className+"."+name;
+      return packageName+"."+className+"."+name;
    }
 
    public int getNoRuns() {

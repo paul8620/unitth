@@ -188,7 +188,13 @@ public class TestHistoryReporter extends Publisher {
            testSuite.setName(new String(ch, start, length));
          }
          else if (qName.equals(CLASS_NAME)) {
-            testCase.setClassName(new String(ch, start, length));
+            String chars = new String(ch, start, length);
+            if (chars.contains(".")) {
+               testCase.setClassName(chars.substring(chars.lastIndexOf(".")));
+               testCase.setPackageName(chars.substring(0, chars.lastIndexOf(".")));
+            } else {
+               testCase.setClassName(chars);
+            }
          }
          else if (qName.equals(TEST_NAME)) {
             testCase.setName(new String(ch, start, length));
@@ -394,6 +400,11 @@ public class TestHistoryReporter extends Publisher {
          sb.append(t(7));
 
          // Link to job/test/report
+         // http://localhost:8080/job/unitth-matrix/91/testReport/unitth.dummytests.pack1/RandomPassFail1Test/test7/
+         String link = Hudson.getInstance().getRootUrl()+project.getUrl()+"/"+buildNumber+"/testReport/"+tc.getPackageName()+"/"+tc.getClassName()+"/"+tc
+            .getName()+"/";
+
+         logger.print("Build link: "+link);
          sb.append("<td class=\""
             +cssClass
             +"\" align=\"center\">&nbsp;&nbsp;"

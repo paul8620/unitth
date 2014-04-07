@@ -6,6 +6,7 @@ public class TestCase {
    private double duration = 0.0;
    private String name = null;
    private String className = null;
+   private String packageName = null;
 
    public void setDuration(String duration) {
       this.duration = Double.parseDouble(duration);
@@ -36,7 +37,15 @@ public class TestCase {
    }
 
    public String getQualifiedName() {
-      return className+"."+name;
+      return packageName+"."+className+"."+name;
+   }
+
+   public void setPackageName(String packageName) {
+      this.packageName = packageName;
+   }
+
+   public String getPackageName() {
+      return packageName;
    }
 
    public String getClassName() {
