@@ -6,6 +6,7 @@ import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Action;
 import hudson.model.BuildListener;
+import hudson.model.Hudson;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Publisher;
@@ -347,16 +348,16 @@ public class TestHistoryReporter extends Publisher {
       try {
          out.write(readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/TestHistoryReporter/header.html")));
 
-         //String hudsonUrl = Hudson.getInstance().getRootUrl();
-         if (project!=null) {
-            sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").innerHTML=\"Back to " + project.getName() + "\";</script>");
-         }/*
+         String hudsonUrl = Hudson.getInstance().getRootUrl();
+         //if (project!=null) {
+         //   sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").innerHTML=\"Back to " + project.getName() + "\";</script>");
+         //}
          if (hudsonUrl == null) {
             sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").onclick = function() { history.go(-1); return false; };</script>");
          } else {
             String jobUrl = hudsonUrl + project.getUrl();
             sb.append("<script type=\"text/javascript\">document.getElementById(\"hudson_link\").href=\"" + jobUrl + "\";</script>");
-         }*/
+         }
 
          out.write(sb.toString());
          out.write(readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/TestHistoryReporter/footer.html")));
