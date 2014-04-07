@@ -74,6 +74,7 @@ public class TestHistoryReporter extends Publisher {
    @Override
    public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
       throws InterruptedException, IOException {
+      testCaseMatrix = new TreeMap<String,TestCaseMatrix>();
       buildReports = new ArrayList<TestReport>();
       buildNumbers = new TreeSet<Integer>();
       logger = listener.getLogger();
