@@ -303,7 +303,7 @@ public class TestHistoryReporter extends Publisher {
    public void generateMatrix(File rootDir) throws IOException {
       int i = 0;
       StringBuffer sb = new StringBuffer();
-      sb.append("<li id=\"1\" class=\"unselected\" onclick=\"updateBody('1');\" value=\"" + rootDir + "/thx/test-matrix.html\">History matrix</li>"+LF);
+      //sb.append("<li id=\"1\" class=\"unselected\" onclick=\"updateBody('1');\" value=\"" + rootDir + "/thx/test-matrix.html\">History matrix</li>"+LF);
       sb.append("<br><br>"+LF);
       sb.append("<table>"+LF);
       sb.append(t(++i)+"<thead>"+LF);
@@ -334,10 +334,11 @@ public class TestHistoryReporter extends Publisher {
          sb.append(t(--i) + "</table>" + LF);
          sb.append(t(--i)+"</td>"+LF);
          sb.append(t(--i)+"</tr>"+LF);
+         i--;
       }
       sb.append(t(--i)+"</tbody>"+LF);
       sb.append("</table>"+LF);
-      sb.append("</li>"+LF);
+      //sb.append("</li>"+LF);
 
       // Write to file in the correct location
       File folder = new File(rootDir, "thx");

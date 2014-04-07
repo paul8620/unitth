@@ -103,16 +103,16 @@ TD.norun {
 </style>
 
 <script type="text/javascript">
-function updateBody(tabId, page) {
-    document.getElementById(selectedTab).setAttribute("class", "unselected");
-    tab = document.getElementById(tabId)
-    tab.setAttribute("class", "selected");
-    selectedTab = tabId;
-    iframe = document.getElementById("myframe");
-    iframe.src = tab.getAttribute("value");
-}
+//function updateBody(tabId, page) {
+//    document.getElementById(selectedTab).setAttribute("class", "unselected");
+//    tab = document.getElementById(tabId)
+//    tab.setAttribute("class", "selected");
+//    selectedTab = tabId;
+//    iframe = document.getElementById("myframe");
+//    iframe.src = tab.getAttribute("value");
+//}
 function init(tabId){
-	updateBody(tabId);
+//	updateBody(tabId);
 	updateViewport();
 	
 	window.onresize = updateViewport;
@@ -145,13 +145,13 @@ function updateViewport(){
 	iframe = document.getElementById("myframe");
 	iframe.style.height = (viewportheight-30)+'px';
 }
-var selectedTab = "tab1"
+//var selectedTab = "tab1"
 </script>
 
 </head>
 
-<body onload="init('tab1');">
+<!--body onload="init('tab1');"-->
+<body>
+<!--h2><a id="hudson_link" href="#"></a></h2-->
 
-<h2><a id="hudson_link" href="#"></a></h2>
-
-<ul id="tabnav">
+<!--ul id="tabnav"-->
