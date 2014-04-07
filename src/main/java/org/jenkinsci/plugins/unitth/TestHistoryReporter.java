@@ -20,8 +20,10 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.imageio.ImageIO;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -374,7 +376,21 @@ public class TestHistoryReporter extends Publisher {
       } finally {
          out.close();
       }
+      generatePixelImage(folder);
       logger.println("[unitth] Wrote test history matrix to '"+f.getCanonicalFile()+"'");
+   }
+
+   private void generatePixelImage(File directory) {
+      BufferedImage singlePixelImage = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
+
+      // then I'm saving the generated image in file:
+      File file = new File(directory, "pixel.png");
+      try {
+         ImageIO.write(singlePixelImage, "png", file);
+      } catch (IOException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
    }
 
    private String readFile(InputStream file) throws Exception {
@@ -416,12 +432,12 @@ public class TestHistoryReporter extends Publisher {
             logger.println("Build link: "+link);
             sb.append("<td class=\""
                +cssClass
-               +"\" align=\"center\"><a href=\""+link+"\">&nbsp;&nbsp;</a>"
+               +"\" align=\"center\"><a href=\""+link+"\"><img src=\"pixel.png\" alt=\"buildNumber\" height=\"8\" width=\"8\"/></a>"
                +"</td>"+LF);
          } else {
             sb.append("<td class=\""
                +cssClass
-               +"\" align=\"center\">&nbsp;&nbsp;</td>"+LF);
+               +"\" align=\"center\"><img src=\"pixel.png\" alt=\"buildNumber\" height=\"8\" width=\"8\"/></td>"+LF);
          }
       }
    }
