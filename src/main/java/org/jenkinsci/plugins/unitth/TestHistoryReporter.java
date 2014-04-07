@@ -402,7 +402,7 @@ public class TestHistoryReporter extends Publisher {
          // Link to job/test/report
          // http://localhost:8080/job/unitth-matrix/91/testReport/unitth.dummytests.pack1/RandomPassFail1Test/test7/
          String link = Hudson.getInstance().getRootUrl()+project.getUrl()+buildNumber+"/testReport/"+tc.getPackageName()+"/"+tc.getClassName()+"/"+tc
-            .getName()+"/";
+            .getName().replaceAll(".", "_")+"/";
 
          logger.println("Build link: "+link);
          sb.append("<td class=\""
