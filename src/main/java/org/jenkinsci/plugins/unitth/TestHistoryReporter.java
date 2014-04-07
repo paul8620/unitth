@@ -190,7 +190,7 @@ public class TestHistoryReporter extends Publisher {
          else if (qName.equals(CLASS_NAME)) {
             String chars = new String(ch, start, length);
             if (chars.contains(".")) {
-               testCase.setClassName(chars.substring(chars.lastIndexOf(".")));
+               testCase.setClassName(chars.substring(chars.lastIndexOf(".")+1));
                testCase.setPackageName(chars.substring(0, chars.lastIndexOf(".")));
             } else {
                testCase.setClassName(chars);
@@ -401,10 +401,10 @@ public class TestHistoryReporter extends Publisher {
 
          // Link to job/test/report
          // http://localhost:8080/job/unitth-matrix/91/testReport/unitth.dummytests.pack1/RandomPassFail1Test/test7/
-         String link = Hudson.getInstance().getRootUrl()+project.getUrl()+"/"+buildNumber+"/testReport/"+tc.getPackageName()+"/"+tc.getClassName()+"/"+tc
+         String link = Hudson.getInstance().getRootUrl()+project.getUrl()+buildNumber+"/testReport/"+tc.getPackageName()+"/"+tc.getClassName()+"/"+tc
             .getName()+"/";
 
-         logger.print("Build link: "+link);
+         logger.println("Build link: "+link);
          sb.append("<td class=\""
             +cssClass
             +"\" align=\"center\">&nbsp;&nbsp;"
