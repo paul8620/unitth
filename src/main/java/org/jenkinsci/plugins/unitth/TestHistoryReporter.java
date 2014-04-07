@@ -303,10 +303,10 @@ public class TestHistoryReporter extends Publisher {
    public void generateMatrix(File rootDir) throws IOException {
       int i = 0;
       StringBuffer sb = new StringBuffer();
-      //sb.append("<li id=\"1\" class=\"unselected\" onclick=\"updateBody('1');\" value=\"" + rootDir + "/thx/test-matrix.html\">History matrix</li>"+LF);
+      sb.append("<li id=\"1\" class=\"unselected\" onclick=\"updateBody('1');\" value=\"" + rootDir + "/thx/test-matrix.html\">History matrix</li>"+LF);
       sb.append("<br><br>"+LF);
-      sb.append("<tbody>"+LF);
-      sb.append(t(++i)+"<table>"+LF);
+      sb.append("<table>"+LF);
+      sb.append(t(++i)+"<thead>"+LF);
       sb.append(t(++i)+"<tr>"+LF);
       sb.append(t(++i)+"<th class=\"graphHeaderLeft\">ClassName.TestName</th>"
          + "<th class=\"graphHeader\">Runs</th>"
@@ -315,9 +315,10 @@ public class TestHistoryReporter extends Publisher {
          + "<th class=\"graphHeader\">Skipped</th>"
          + "<th class=\"graphHeader\" align=\"left\" colspan=\"2\">Spread</th>"+LF);
       sb.append(t(--i)+"</tr>"+LF);
-
+      sb.append(t(--i)+"<thead>"+LF);
+      sb.append(t(i)+"<tbody>"+LF);
       for(TestCaseMatrix tcm : getTestFailingMatrixes().values()) {
-         sb.append(t(i)+"<tr>"+LF);
+         sb.append(t(++i)+"<tr>"+LF);
          sb.append(t(++i)+"<td class=\"graphItemLeft\" align=\"left\" width=\"2*\">"+tcm.getQName()+"</td>");
          sb.append("<td class=\"graphItem\" width=\"1*\">"+tcm.getNoRuns()+"</td>");
          sb.append("<td class=\"graphItem\" width=\"1*\">"+tcm.getNoPassed()+"</td>");
@@ -334,8 +335,8 @@ public class TestHistoryReporter extends Publisher {
          sb.append(t(--i)+"</td>"+LF);
          sb.append(t(--i)+"</tr>"+LF);
       }
-      sb.append(t(--i)+"</table>"+LF);
-      sb.append("</tbody>"+LF);
+      sb.append(t(--i)+"</tbody>"+LF);
+      sb.append("</table>"+LF);
       sb.append("</li>"+LF);
 
       // Write to file in the correct location
@@ -401,6 +402,8 @@ public class TestHistoryReporter extends Publisher {
             }
          }
          sb.append(t(7));
+
+         // Link to job/test/report
          sb.append("<td class=\""
             +cssClass
             +"\" align=\"center\">&nbsp;&nbsp;"
