@@ -399,13 +399,8 @@ public class TestHistoryReporter extends Publisher {
          }
          sb.append(t(7));
 
-         if (tc==null) {
-            sb.append("<td class=\""
-               +cssClass
-               +"\" align=\"center\">&nbsp;&nbsp;</td>"+LF);
-         } else {
-            // Link to job/test/report
-            // http://localhost:8080/job/unitth-matrix/91/testReport/unitth.dummytests.pack1/RandomPassFail1Test/test7/
+         if (tc!=null && tc.getVerdict() == TestCaseVerdict.FAILED) {
+            // Link to job/test/report in format: http://localhost:8080/job/unitth-matrix/91/testReport/unitth.dummytests.pack1/RandomPassFail1Test/test7/
             String link = Hudson.getInstance().getRootUrl()+project.getUrl()+buildNumber+"/testReport/"+tc.getPackageName()+"/"+tc.getClassName()+"/"+tc
                .getName().replace('.', '_')+"/";
 
@@ -414,6 +409,10 @@ public class TestHistoryReporter extends Publisher {
                +cssClass
                +"\" align=\"center\"><a href=\""+link+"\"&nbsp;&nbsp;</a>"
                +"</td>"+LF);
+         } else {
+            sb.append("<td class=\""
+               +cssClass
+               +"\" align=\"center\">&nbsp;&nbsp;</td>"+LF);
          }
       }
    }
