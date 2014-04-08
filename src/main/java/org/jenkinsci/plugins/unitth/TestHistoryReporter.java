@@ -394,7 +394,7 @@ public class TestHistoryReporter extends Publisher {
          if (tc!=null && tc.getVerdict() == TestCaseVerdict.FAILED) {
             // Link to job/test/report in format: http://localhost:8080/job/unitth-matrix/91/testReport/unitth.dummytests.pack1/RandomPassFail1Test/test7/
             String link = Hudson.getInstance().getRootUrl()+project.getUrl()+buildNumber+"/testReport/"+tc.getPackageName()+"/"+tc.getClassName()+"/"+tc
-               .getName().replace('.', '_')+"/";
+               .getName().replace('.', '_').replace(' ','_')+"/";
 
             sb.append("<td class=\""
                +cssClass
