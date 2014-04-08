@@ -289,7 +289,7 @@ public class TestHistoryReporter extends Publisher {
       StringBuffer sb = new StringBuffer();
       String hudsonUrl = Hudson.getInstance().getRootUrl();
       String jobUrl = hudsonUrl + project.getUrl();
-      sb.append("<h3><a href=\""+jobUrl+"\">Back to "+project.getName()+"</a></h3>");
+      sb.append("<br><h3><a href=\""+jobUrl+"\">Back to "+project.getName()+"</a></h3>");
       sb.append("<br><br>"+LF);
       sb.append("<table>"+LF);
       sb.append(t(++i)+"<thead>"+LF);
