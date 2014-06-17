@@ -5,13 +5,16 @@ import hudson.model.AbstractItem;
 import hudson.model.AbstractProject;
 import hudson.model.Action;
 import hudson.model.DirectoryBrowserSupport;
+import hudson.model.Hudson;
 import hudson.model.Run;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
 
 import javax.servlet.ServletException;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class LinkAction implements Action {
@@ -54,7 +57,29 @@ public class LinkAction implements Action {
       // Generate an empty report with notification for the first time the plugin is executed.
       File indexFile = new File(toReturn.getAbsolutePath()+"/index.html");
       if (!indexFile.exists()) {
-
+         try {
+            BufferedWriter out = null;
+            indexFile.createNewFile();
+            out = new BufferedWriter(new FileWriter(indexFile));
+            try {
+               out.write(Utils.readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/TestHistoryReporter/header.html")));
+               StringBuffer sb = new StringBuffer();
+               String hudsonUrl = Hudson.getInstance().getRootUrl();
+               String jobUrl = hudsonUrl + project.getUrl();
+               sb.append("<br><h3><a href=\""+jobUrl+"\">Back to "+project.getName()+"</a></h3>");
+               sb.append("<br><br>/n");
+               sb.append("<h4>You need to run the job at-least once with the test matrix plugin to get the results.</h4>/n");
+               out.write(sb.toString());
+               out.write(Utils.readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/TestHistoryReporter/footer.html")));
+               out.flush();
+            } catch (Exception e) {
+               // Do what?
+            } finally {
+               out.close();
+            }
+         } catch(IOException ioe) {
+            // Do what?
+         }
       }
       return toReturn;
    }

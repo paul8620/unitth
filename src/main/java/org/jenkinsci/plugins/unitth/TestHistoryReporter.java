@@ -24,14 +24,11 @@ import javax.imageio.ImageIO;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -333,9 +330,9 @@ public class TestHistoryReporter extends Publisher {
 
       BufferedWriter out = new BufferedWriter(new FileWriter(f));
       try {
-         out.write(readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/TestHistoryReporter/header.html")));
+         out.write(Utils.readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/TestHistoryReporter/header.html")));
          out.write(sb.toString());
-         out.write(readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/TestHistoryReporter/footer.html")));
+         out.write(Utils.readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/TestHistoryReporter/footer.html")));
          out.flush();
       } catch (Exception e) {
          logger.println("[unitth] Exception thrown when trying to write the report file."+e.getMessage()+e.getStackTrace());
@@ -358,19 +355,6 @@ public class TestHistoryReporter extends Publisher {
          // TODO Auto-generated catch block
          e.printStackTrace();
       }
-   }
-
-   private String readFile(InputStream file) throws Exception {
-      BufferedReader reader = new BufferedReader(new InputStreamReader(file));
-      String line;
-      StringBuffer sb = new StringBuffer();
-      String ls = System.getProperty("line.separator");
-
-      while( ( line = reader.readLine() ) != null ) {
-         sb.append(line);
-         sb.append(ls);
-      }
-      return sb.toString();
    }
 
    private void generateSpreadBar(StringBuffer sb, TestCaseMatrix tcm) {
