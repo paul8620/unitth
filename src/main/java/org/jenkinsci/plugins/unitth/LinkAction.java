@@ -40,9 +40,9 @@ public class LinkAction implements Action {
    }
 
    protected File dir() {
-      File toReturn = null;
+      File toReturn = getProjectArchiveDir(this.project);
       if (this.project instanceof AbstractProject) {
-         AbstractProject abstractProject = (AbstractProject) this.project;
+         AbstractProject abstractProject = this.project;
 
          Run run = abstractProject.getLastSuccessfulBuild();
          if (run != null) {
@@ -51,9 +51,8 @@ public class LinkAction implements Action {
                toReturn = javadocDir;
             }
          }
-      } else {
-         toReturn = getProjectArchiveDir(this.project);
       }
+
       // Generate an empty report with notification for the first time the plugin is executed.
       File indexFile = new File(toReturn.getAbsolutePath()+"/index.html");
       if (!indexFile.exists()) {
