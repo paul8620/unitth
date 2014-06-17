@@ -54,6 +54,10 @@ public class LinkAction implements Action {
       }
 
       // Generate an empty report with notification for the first time the plugin is executed.
+      File dir = new File(toReturn.getAbsolutePath());
+      if (!dir.exists()) {
+         dir.mkdir();
+      }
       File indexFile = new File(toReturn.getAbsolutePath()+"/index.html");
       if (!indexFile.exists()) {
          try {
