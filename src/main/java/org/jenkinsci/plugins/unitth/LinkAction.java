@@ -37,20 +37,26 @@ public class LinkAction implements Action {
    }
 
    protected File dir() {
+      File toReturn = null;
       if (this.project instanceof AbstractProject) {
          AbstractProject abstractProject = (AbstractProject) this.project;
 
          Run run = abstractProject.getLastSuccessfulBuild();
          if (run != null) {
             File javadocDir = getBuildArchiveDir(run);
-
             if (javadocDir.exists()) {
-               return javadocDir;
+               toReturn = javadocDir;
             }
          }
+      } else {
+         toReturn = getProjectArchiveDir(this.project);
       }
+      // Generate an empty report with notification for the first time the plugin is executed.
+      File indexFile = new File(toReturn.getAbsolutePath()+"/index.html");
+      if (!indexFile.exists()) {
 
-      return getProjectArchiveDir(this.project);
+      }
+      return toReturn;
    }
 
    private File getProjectArchiveDir(AbstractItem project) {
