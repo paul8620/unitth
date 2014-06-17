@@ -70,8 +70,8 @@ public class LinkAction implements Action {
                String hudsonUrl = Hudson.getInstance().getRootUrl();
                String jobUrl = hudsonUrl + project.getUrl();
                sb.append("<br><h3><a href=\""+jobUrl+"\">Back to "+project.getName()+"</a></h3>");
-               sb.append("<br><br>/n");
-               sb.append("<h4>You need to run the job at-least once with the test matrix plugin to get the results.</h4>/n");
+               sb.append("<br><br>");
+               sb.append("<center><h2>You need to run the job at-least once with the test matrix plugin to get the results.</h2></center>");
                out.write(sb.toString());
                out.write(Utils.readFile(this.getClass().getResourceAsStream("/org/jenkinsci/plugins/unitth/TestHistoryReporter/footer.html")));
                out.flush();
