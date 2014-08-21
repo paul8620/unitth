@@ -30,8 +30,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -290,6 +288,9 @@ public class TestHistoryReporter extends Publisher {
       String jobUrl = hudsonUrl + project.getUrl();
       sb.append("<br><h3><a href=\""+jobUrl+"\">Back to "+project.getName()+"</a></h3>");
       sb.append("<br><br>"+LF);
+      sb.append("<i>Failed test case runs can be accessed by clicking on the failed runs (red) in the matrix. Note that if the job has been "
+         + "configured to remove reports after running e.g. 'Max # of builds to keep : 10' then links to removed runs will not work.</i>"+LF);
+      sb.append("<br><br>"+LF);
       sb.append("<table>"+LF);
       sb.append(t(++i)+"<thead>"+LF);
       sb.append(t(++i)+"<tr>"+LF);
@@ -382,32 +383,11 @@ public class TestHistoryReporter extends Publisher {
             String link = Hudson.getInstance().getRootUrl()+project.getUrl()+buildNumber+"/testReport/"+tc.getPackageName()+"/"+tc.getClassName()+"/"+tc
                .getName().replace('.', '_').replace(' ','_').replace('>','_').replace(':','_')+"/";
 
-            try {
-               URL url = new URL(link);
-               HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-               connection.setRequestMethod("GET");
-               connection.connect();
-               int code = connection.getResponseCode();
-
-               if (code != 404) {
-                  sb.append("<td class=\""
-                     +cssClass
-                     +"\" align=\"center\"><a href=\""+link+"\"><img src=\"pixel.png\" alt=\""+buildNumber+"\" title=\""+buildNumber+"\" height=\"10\" "
-                     + "width=\"8\"/></a>"
-                     +"</td>"+LF);
-               }
-               else {
-                  sb.append("<td class=\""
-                     +cssClass
-                     +"\" align=\"center\"><img src=\"pixel.png\" alt=\""+buildNumber+"\" title=\""+buildNumber+"\" height=\"10\" "
-                     + "width=\"8\"/>"
-                     +"</td>"+LF);
-               }
-
-
-            } catch (Exception e) {}
-
-
+            sb.append("<td class=\""
+               +cssClass
+               +"\" align=\"center\"><a href=\""+link+"\"><img src=\"pixel.png\" alt=\""+buildNumber+"\" title=\""+buildNumber+"\" height=\"10\" "
+               + "width=\"8\"/></a>"
+               +"</td>"+LF);
          } else {
             sb.append("<td class=\""
                +cssClass
