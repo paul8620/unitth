@@ -30,6 +30,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -380,11 +382,32 @@ public class TestHistoryReporter extends Publisher {
             String link = Hudson.getInstance().getRootUrl()+project.getUrl()+buildNumber+"/testReport/"+tc.getPackageName()+"/"+tc.getClassName()+"/"+tc
                .getName().replace('.', '_').replace(' ','_').replace('>','_').replace(':','_')+"/";
 
-            sb.append("<td class=\""
-               +cssClass
-               +"\" align=\"center\"><a href=\""+link+"\"><img src=\"pixel.png\" alt=\""+buildNumber+"\" title=\""+buildNumber+"\" height=\"10\" "
-               + "width=\"8\"/></a>"
-               +"</td>"+LF);
+            try {
+               URL url = new URL(link);
+               HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+               connection.setRequestMethod("GET");
+               connection.connect();
+               int code = connection.getResponseCode();
+
+               if (code != 404) {
+                  sb.append("<td class=\""
+                     +cssClass
+                     +"\" align=\"center\"><a href=\""+link+"\"><img src=\"pixel.png\" alt=\""+buildNumber+"\" title=\""+buildNumber+"\" height=\"10\" "
+                     + "width=\"8\"/></a>"
+                     +"</td>"+LF);
+               }
+               else {
+                  sb.append("<td class=\""
+                     +cssClass
+                     +"\" align=\"center\"><img src=\"pixel.png\" alt=\""+buildNumber+"\" title=\""+buildNumber+"\" height=\"10\" "
+                     + "width=\"8\"/>"
+                     +"</td>"+LF);
+               }
+
+
+            } catch (Exception e) {}
+
+
          } else {
             sb.append("<td class=\""
                +cssClass
