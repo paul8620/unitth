@@ -383,12 +383,12 @@ public class TestHistoryReporter extends Publisher {
             sb.append("<td class=\""
                +cssClass
                +"\" align=\"center\"><a href=\""+link+"\"><img src=\"pixel.png\" alt=\""+buildNumber+"\" title=\""+buildNumber+"\" height=\"10\" "
-               + "width=\"6\"/></a>"
+               + "width=\"8\"/></a>"
                +"</td>"+LF);
          } else {
             sb.append("<td class=\""
                +cssClass
-               +"\" align=\"center\"><img src=\"pixel.png\" alt=\""+buildNumber+"\" title=\""+buildNumber+"\" height=\"10\" width=\"6\"/></td>"+LF);
+               +"\" align=\"center\"><img src=\"pixel.png\" alt=\""+buildNumber+"\" title=\""+buildNumber+"\" height=\"10\" width=\"8\"/></td>"+LF);
          }
       }
    }
