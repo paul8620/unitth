@@ -295,7 +295,7 @@ public class TestHistoryReporter extends Publisher {
          + "Post-build "
          + "Action.</i></li>"+LF);
       sb.append("</ul>"+LF);
-      sb.append("<br><br>"+LF);
+      sb.append("<br>"+LF);
       sb.append("<table>"+LF);
       sb.append(t(++i)+"<thead>"+LF);
       sb.append(t(++i)+"<tr>"+LF);
