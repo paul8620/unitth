@@ -1,0 +1,4 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+  <f:entry title="Publish JUnit test result report Post-build action needs to be enabled and configured to be able to generate the test history."
+           field="desc/"/>
+</j:jelly>

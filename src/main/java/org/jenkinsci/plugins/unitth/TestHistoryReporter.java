@@ -287,6 +287,7 @@ public class TestHistoryReporter extends Publisher {
       String hudsonUrl = Hudson.getInstance().getRootUrl();
       String jobUrl = hudsonUrl + project.getUrl();
       sb.append("<br><h3><a href=\""+jobUrl+"\">Back to "+project.getName()+"</a></h3>");
+      /*
       sb.append("<br><br>"+LF);
       sb.append("<ul>"+LF);
       sb.append("<li><i>Failed test case runs can be accessed by clicking on the failed runs (red) in the matrix.<br>Note that if the job has been "
@@ -295,6 +296,7 @@ public class TestHistoryReporter extends Publisher {
          + "Post-build "
          + "Action.</i></li>"+LF);
       sb.append("</ul>"+LF);
+      */
       sb.append("<br>"+LF);
       sb.append("<table>"+LF);
       sb.append(t(++i)+"<thead>"+LF);
