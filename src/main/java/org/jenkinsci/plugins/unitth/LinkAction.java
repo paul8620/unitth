@@ -20,7 +20,8 @@ import java.io.IOException;
 public class LinkAction implements Action {
    private String url;
    private String text = "Test matrix";
-   private String icon = "graph.gif";
+   //private String icon = "graph.gif";
+   private String icon = "/plugin/unitth/unitth.png";
    private AbstractProject project;
 
    @DataBoundConstructor
@@ -34,7 +35,8 @@ public class LinkAction implements Action {
    public String getIconFileName() { return icon; }
 
    public void doDynamic(StaplerRequest req, StaplerResponse rsp) throws IOException, ServletException {
-      DirectoryBrowserSupport dbs = new DirectoryBrowserSupport(this, new FilePath(this.dir()), "Test matrix", "graph.gif", false);
+      //DirectoryBrowserSupport dbs = new DirectoryBrowserSupport(this, new FilePath(this.dir()), "Test matrix", "graph.gif", false);
+      DirectoryBrowserSupport dbs = new DirectoryBrowserSupport(this, new FilePath(this.dir()), "Test matrix", "iffc-ss-logo.png", false);
       dbs.setIndexFileName("index.html");
       dbs.generateResponse(req, rsp, this);
    }
