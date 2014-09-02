@@ -287,16 +287,17 @@ public class TestHistoryReporter extends Publisher {
       String hudsonUrl = Hudson.getInstance().getRootUrl();
       String jobUrl = hudsonUrl + project.getUrl();
       sb.append("<br><h3><a href=\""+jobUrl+"\">Back to "+project.getName()+"</a></h3>");
-      /*
       sb.append("<br><br>"+LF);
       sb.append("<ul>"+LF);
-      sb.append("<li><i>Failed test case runs can be accessed by clicking on the failed runs (red) in the matrix.<br>Note that if the job has been "
+      sb.append("<li><i>Failed test case runs can be accessed by clicking on the failed runs (red) in the matrix.</i></li>");
+      /*
+      sb.append("<br>Note that if the job has been "
          + "configured to remove reports after running e.g.<br>'Max # of builds to keep : 10' then links to removed runs will not work.</i></li>"+LF);
       sb.append("<li><i>If this report is empty it might be that you have to make sure you enable and<br>configure 'Publish JUnit test result report' as a "
          + "Post-build "
          + "Action.</i></li>"+LF);
-      sb.append("</ul>"+LF);
       */
+      sb.append("</ul>"+LF);
       sb.append("<br>"+LF);
       sb.append("<table>"+LF);
       sb.append(t(++i)+"<thead>"+LF);
